@@ -21,6 +21,7 @@ class BP_Group_Clone {
     private function define_hooks() {
         add_action('bp_include', array($this, 'setup_group_clone_functions'));
         add_action('bp_init', array($this, 'init_group_clone_functions'));
+        add_action('admin_enqueue_scripts', array($this->group_clone_functions, 'add_admin_button'));
     }
 
     public function run() {
