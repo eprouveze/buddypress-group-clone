@@ -247,7 +247,7 @@ class BP_Group_Clone_Functions {
                 var $this = $(this);
                 var groupId = $this.closest('tr').attr('id').replace('group-', '');
                 if ($this.find('.bp-group-clone').length === 0) {
-                    $this.find('.delete').before('<span class="clone"> | <a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a></span>');
+                    $this.prepend('<span class="clone"><a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a> | </span>');
                 }
             });
 
