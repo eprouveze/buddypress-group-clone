@@ -249,10 +249,12 @@ class BP_Group_Clone_Functions {
                 }
             });
 
-            $(document).on('click', '.bp-group-clone', function(e) {
+            $('body').on('click', '.bp-group-clone', function(e) {
                 e.preventDefault();
+                console.log('Clone button clicked');
                 var groupId = $(this).data('group-id');
                 var groupName = $(this).closest('tr').find('.column-title strong').text();
+                console.log('Group ID:', groupId, 'Group Name:', groupName);
                 
                 var cloneDialog = $('<div title="Clone Group">' +
                     '<p>Enter a name for the cloned group:</p>' +
