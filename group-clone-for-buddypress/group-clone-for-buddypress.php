@@ -47,7 +47,7 @@ function group_clone_for_bp_init() {
     if (group_clone_for_bp_check_buddypress()) {
         if (class_exists('BP_Group_Clone')) {
             $group_clone_for_bp = new BP_Group_Clone();
-            $group_clone_for_bp->run();
+            add_action('bp_init', array($group_clone_for_bp, 'run'));
         }
     }
 }
