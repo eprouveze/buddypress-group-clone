@@ -7,7 +7,7 @@ class BP_Group_Clone_Functions {
     public function __construct() {
         add_action('bp_setup_nav', array($this, 'add_admin_nav_item'));
         add_action('admin_init', array($this, 'process_clone'));
-        add_action('admin_footer', array($this, 'add_admin_button'));
+        add_action('admin_footer', array($this, 'add_admin_button'), 20);
     }
 
     // Add "Clone Group" form to group admin area
@@ -97,7 +97,7 @@ class BP_Group_Clone_Functions {
     // Add clone button to admin groups list
     public function add_admin_button() {
         $screen = get_current_screen();
-        if ($screen->id !== 'buddypress_page_bp-groups') {
+        if ($screen->id !== 'groups') {
             return;
         }
 
