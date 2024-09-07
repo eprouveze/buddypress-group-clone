@@ -128,12 +128,12 @@ class BP_Group_Clone_Functions {
                     groups_update_groupmeta($new_group_id, $meta_key, $meta_value);
                 }
 
-                bp_core_add_message(__('Group cloned successfully.', 'buddypress-group-clone'));
-                // Redirect to the groups admin page
-                wp_safe_redirect(admin_url('admin.php?page=bp-groups'));
-                exit;
+                wp_send_json_success(array(
+                    'message' => __('Group cloned successfully.', 'buddypress-group-clone'),
+                    'redirect_url' => admin_url('admin.php?page=bp-groups')
+                ));
             } else {
-                bp_core_add_message(__('Failed to clone group', 'buddypress-group-clone'), 'error');
+                wp_send_json_error(__('Failed to clone group', 'buddypress-group-clone'));
             }
         }
     }
@@ -272,7 +272,11 @@ class BP_Group_Clone_Functions {
                     console.log('Group ID:', groupId);
                     console.log('Group Name:', groupName);
                     
+                    var groupStatus = '<?php echo esc_js($original_group->status); ?>';
+                    var groupType = '<?php echo esc_js($original_group->enable_forum ? 'Forum' : 'Non-Forum'); ?>';
                     var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
+                        '<p>' + <?php echo wp_json_encode(__('Group Status: ', 'buddypress-group-clone')); ?> + groupStatus + '</p>' +
+                        '<p>' + <?php echo wp_json_encode(__('Group Type: ', 'buddypress-group-clone')); ?> + groupType + '</p>' +
                         '<p>' + <?php echo wp_json_encode(__('Enter a name for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
                         '<input type="text" id="new_group_name" value="' + groupName + '">' +
                         '<p>' + <?php echo wp_json_encode(__('Optional: Select additional components to clone:', 'buddypress-group-clone')); ?> + '</p>' +
