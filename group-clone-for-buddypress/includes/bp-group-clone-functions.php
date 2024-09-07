@@ -259,9 +259,12 @@ class BP_Group_Clone_Functions {
         error_log('Current page: ' . $pagenow);
         error_log('$_GET[\'page\']: ' . (isset($_GET['page']) ? $_GET['page'] : 'not set'));
 
-        if ($pagenow !== 'admin.php' || !isset($_GET['page']) || $_GET['page'] !== 'bp-groups') {
-            error_log('BP Group Clone: Conditions not met for adding button');
-            return;
+        if ($pagenow === 'admin.php' && isset($_GET['page']) && $_GET['page'] === 'bp-groups') {
+            wp_enqueue_script('jquery');
+            wp_enqueue_script('jquery-ui-dialog');
+            wp_enqueue_style('wp-jquery-ui-dialog');
+            wp_enqueue_script('bp-group-clone-dialog', plugins_url('assets/js/clone-dialog.js', __FILE__), array('jquery', 'jquery-ui-dialog'), null, true);
+            wp_localize_script('bp-group-clone-dialog', 'bpGroupCloneNonce', array('nonce' => wp_create_nonce('bp_group_clone')));
         }
 
         wp_enqueue_script('jquery');
