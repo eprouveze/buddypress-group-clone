@@ -50,6 +50,8 @@ class BP_Group_Clone_Settings {
             'bp-group-clone-settings',
             'bp_group_clone_main_section'
         );
+
+        add_settings_field(
             'bp_group_clone_default_components',
             __('Default Components to Clone', 'buddypress-group-clone'),
             array($this, 'render_components_field'),
@@ -88,6 +90,8 @@ class BP_Group_Clone_Settings {
         </select>
         <?php
     }
+
+    public function render_settings_page() {
         ?>
         <div class="wrap">
             <h1><?php esc_html_e('Group Clone Settings', 'buddypress-group-clone'); ?></h1>
