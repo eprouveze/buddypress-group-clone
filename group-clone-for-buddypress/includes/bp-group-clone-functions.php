@@ -294,35 +294,39 @@ class BP_Group_Clone_Functions {
                                     selectedComponents.push($(this).val());
                                 });
 
-                                if (newGroupName && selectedComponents.length > 0) {
-                                    $.ajax({
-                                        url: ajaxurl,
-                                        type: 'POST',
-                                        data: {
-                                            action: 'bp_group_clone',
-                                            group_id: groupId,
-                                            new_group_name: newGroupName,
-                                            clone_components: selectedComponents,
-                                            _wpnonce: bpGroupCloneNonce
-                                        },
-                                        success: function(response) {
-                                            if (response.success) {
-                                                alert('Group cloned successfully!');
-                                                location.reload();
-                                            } else {
-                                                alert('Error: ' + response.data);
-                                            }
-                                        },
-                                        error: function() {
-                                            alert('An error occurred while cloning the group.');
-                                        }
-                                    });
-                                    $(this).dialog("close");
-                                } else if (!newGroupName) {
+                                if (!newGroupName) {
                                     alert('Please enter a group name.');
-                                } else {
-                                    alert('Please select at least one component to clone.');
+                                    return;
                                 }
+
+                                if (selectedComponents.length === 0) {
+                                    alert('Please select at least one component to clone.');
+                                    return;
+                                }
+
+                                $.ajax({
+                                    url: ajaxurl,
+                                    type: 'POST',
+                                    data: {
+                                        action: 'bp_group_clone',
+                                        group_id: groupId,
+                                        new_group_name: newGroupName,
+                                        clone_components: selectedComponents,
+                                        _wpnonce: bpGroupCloneNonce
+                                    },
+                                    success: function(response) {
+                                        if (response.success) {
+                                            alert('Group cloned successfully!');
+                                            location.reload();
+                                        } else {
+                                            alert('Error: ' + response.data);
+                                        }
+                                    },
+                                    error: function() {
+                                        alert('An error occurred while cloning the group.');
+                                    }
+                                });
+                                $(this).dialog("close");
                             },
                             "Cancel": function() {
                                 $(this).dialog("close");
