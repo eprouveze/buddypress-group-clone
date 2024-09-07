@@ -249,14 +249,6 @@ class BP_Group_Clone_Functions {
                 }
             });
 
-            // Remove any duplicate clone buttons
-            $('.row-actions').each(function() {
-                var $cloneButtons = $(this).find('.bp-group-clone');
-                if ($cloneButtons.length > 1) {
-                    $cloneButtons.not(':first').remove();
-                }
-            });
-
             $('body').on('click', '.bp-group-clone', function(e) {
                 e.preventDefault();
                 console.log('Clone button clicked');
