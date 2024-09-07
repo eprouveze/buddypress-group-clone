@@ -7,7 +7,14 @@ class BP_Group_Clone_Functions {
     public function __construct() {
         add_action('bp_setup_nav', array($this, 'add_admin_nav_item'));
         add_action('admin_init', array($this, 'process_clone'));
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('admin_enqueue_scripts', array($this, 'add_admin_button'));
+    }
+
+    public function enqueue_admin_scripts() {
+        wp_enqueue_script('jquery');
+        wp_enqueue_script('jquery-ui-dialog');
+        wp_enqueue_style('wp-jquery-ui-dialog');
     }
 
     // Add "Clone Group" form to group admin area
