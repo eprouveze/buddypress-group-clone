@@ -96,6 +96,12 @@ class BP_Group_Clone_Functions {
         if (isset($_POST['clone_group_submit']) && isset($_POST['clone_group_nonce']) && wp_verify_nonce(wp_unslash($_POST['clone_group_nonce']), 'clone_group')) {
             $original_group_id = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
             $original_group = groups_get_group($original_group_id);
+            if (!$original_group) {
+                error_log('Invalid original group ID: ' . $original_group_id);
+                wp_send_json_error(__('Invalid original group ID', 'buddypress-group-clone'));
+                return;
+            }
+
             $new_group_name = isset($_POST['new_group_name']) ? sanitize_text_field(wp_unslash($_POST['new_group_name'])) : '';
             $clone_components = isset($_POST['clone_components']) ? array_map('sanitize_text_field', wp_unslash($_POST['clone_components'])) : array();
 
