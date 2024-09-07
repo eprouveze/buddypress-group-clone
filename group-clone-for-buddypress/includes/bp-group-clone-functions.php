@@ -236,7 +236,12 @@ class BP_Group_Clone_Functions {
     // Add clone button to admin groups list
     public function add_admin_button() {
         global $pagenow;
+        error_log('BP Group Clone: add_admin_button called');
+        error_log('Current page: ' . $pagenow);
+        error_log('$_GET[\'page\']: ' . (isset($_GET['page']) ? $_GET['page'] : 'not set'));
+
         if ($pagenow !== 'admin.php' || !isset($_GET['page']) || $_GET['page'] !== 'bp-groups') {
+            error_log('BP Group Clone: Conditions not met for adding button');
             return;
         }
 
@@ -244,13 +249,16 @@ class BP_Group_Clone_Functions {
         wp_enqueue_script('jquery-ui-dialog');
         wp_enqueue_style('wp-jquery-ui-dialog');
         add_action('admin_footer', function() {
+            error_log('BP Group Clone: admin_footer action triggered');
             if (!isset($_REQUEST['_wpnonce']) || !wp_verify_nonce(wp_unslash($_REQUEST['_wpnonce']), 'bp_groups_admin_action')) {
+                error_log('BP Group Clone: Nonce verification failed');
                 return;
             }
             ?>
             <script type="text/javascript">
             /* <![CDATA[ */
         jQuery(document).ready(function($) {
+            console.log('BP Group Clone: jQuery ready function executed');
             $('.row-actions').each(function() {
                 var $this = $(this);
                 var groupId = $this.closest('tr').attr('id').replace('group-', '');
