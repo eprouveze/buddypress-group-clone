@@ -21,11 +21,11 @@ define('BP_GROUP_CLONE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('BP_GROUP_CLONE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Include the main Group_Clone_For_BP class and functions
-if (file_exists(GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-bp-group-clone.php')) {
-    require_once GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-bp-group-clone.php';
+if (file_exists(BP_GROUP_CLONE_PLUGIN_DIR . 'includes/class-bp-group-clone.php')) {
+    require_once BP_GROUP_CLONE_PLUGIN_DIR . 'includes/class-bp-group-clone.php';
 }
-if (file_exists(GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/bp-group-clone-functions.php')) {
-    require_once GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/bp-group-clone-functions.php';
+if (file_exists(BP_GROUP_CLONE_PLUGIN_DIR . 'includes/bp-group-clone-functions.php')) {
+    require_once BP_GROUP_CLONE_PLUGIN_DIR . 'includes/bp-group-clone-functions.php';
 }
 
 // Check if BuddyPress is active
