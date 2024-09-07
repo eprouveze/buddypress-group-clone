@@ -97,6 +97,7 @@ class BP_Group_Clone_Functions {
             $new_group_id = groups_create_group(array(
                 'creator_id' => get_current_user_id(),
                 'name' => $new_group_name,
+                /* translators: %s: Original group name */
                 'description' => sprintf(__('This is a clone of the group "%s"', 'buddypress-group-clone'), $original_group->name),
                 'slug' => groups_check_slug(sanitize_title($new_group_name)),
                 'status' => $original_group->status,
