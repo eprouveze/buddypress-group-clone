@@ -21,11 +21,11 @@ define('GROUP_CLONE_FOR_BP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GROUP_CLONE_FOR_BP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Include the main Group_Clone_For_BP class and functions
-if (file_exists(GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-group-clone-for-bp.php')) {
-    require_once GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-group-clone-for-bp.php';
+if (file_exists(GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-bp-group-clone.php')) {
+    require_once GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-bp-group-clone.php';
 }
-if (file_exists(GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-group-clone-for-bp-functions.php')) {
-    require_once GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-group-clone-for-bp-functions.php';
+if (file_exists(GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/bp-group-clone-functions.php')) {
+    require_once GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/bp-group-clone-functions.php';
 }
 
 // Check if BuddyPress is active
@@ -45,15 +45,14 @@ function group_clone_for_bp_buddypress_notice() {
 // Initialize the plugin
 function group_clone_for_bp_init() {
     if (group_clone_for_bp_check_buddypress()) {
-        if (class_exists('Group_Clone_For_BP')) {
-            $group_clone_for_bp = new Group_Clone_For_BP();
+        if (class_exists('BP_Group_Clone')) {
+            $group_clone_for_bp = new BP_Group_Clone();
             $group_clone_for_bp->run();
         }
         
-        // Initialize Group_Clone_For_BP_Functions
-        if (class_exists('Group_Clone_For_BP_Functions')) {
-            $group_clone_for_bp_functions = new Group_Clone_For_BP_Functions();
-            $group_clone_for_bp_functions->init();
+        // Initialize functions
+        if (function_exists('bp_group_clone_init')) {
+            bp_group_clone_init();
         }
     }
 }
