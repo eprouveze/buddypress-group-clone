@@ -106,8 +106,8 @@ class BP_Group_Clone_Functions {
         jQuery(document).ready(function($) {
             $('.row-actions').each(function() {
                 var $this = $(this);
-                var groupId = $this.closest('tr').attr('id').match(/\d+/)[0];
-                $this.find('.delete').before('<span class="clone"> | <a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a></span> | ');
+                var groupId = $this.closest('tr').attr('id').replace('group-', '');
+                $this.find('.delete').before('<span class="clone"> | <a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a></span>');
             });
 
             $(document).on('click', '.bp-group-clone', function(e) {
