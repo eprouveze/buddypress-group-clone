@@ -334,8 +334,6 @@ class BP_Group_Clone_Functions {
             <?php
         });
     }
-
-    }
 }
 
 // Initialize the BP_Group_Clone_Functions class
