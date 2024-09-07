@@ -9,6 +9,7 @@ class BP_Group_Clone_Functions {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('admin_enqueue_scripts', array($this, 'add_admin_button'));
         add_action('wp_ajax_bp_group_clone', array($this, 'process_clone'));
+        add_action('wp_ajax_bp_group_clone_log_error', array($this, 'log_ajax_error'));
     }
 
     // Log AJAX errors
@@ -24,6 +25,7 @@ class BP_Group_Clone_Functions {
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-dialog');
         wp_enqueue_style('wp-jquery-ui-dialog');
+        wp_enqueue_script('bp-group-clone-admin', plugins_url('assets/js/admin.js', __FILE__), array('jquery', 'jquery-ui-dialog'), null, true);
     }
 
     // Add "Clone Group" form to group admin area
