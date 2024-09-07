@@ -37,7 +37,7 @@ jQuery(document).ready(function($) {
         cloneDialog.dialog({
             modal: true,
             buttons: {
-                bpGroupCloneL10n.cloneButtonText: function() {
+                [bpGroupCloneL10n.cloneButtonText]: function() {
                     var newGroupName = cloneDialog.find('input#new_group_name').val();
                     console.log('Retrieved Group Name:', newGroupName); // Debugging line
                     var selectedComponents = cloneDialog.find('input[name="clone_components[]"]:checked').map(function() {
