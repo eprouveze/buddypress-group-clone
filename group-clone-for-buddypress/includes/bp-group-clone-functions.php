@@ -250,15 +250,13 @@ class BP_Group_Clone_Functions {
         wp_enqueue_style('wp-jquery-ui-dialog');
         add_action('admin_footer', function() {
             error_log('BP Group Clone: admin_footer action triggered');
-            if (!isset($_REQUEST['_wpnonce']) || !wp_verify_nonce(wp_unslash($_REQUEST['_wpnonce']), 'bp_groups_admin_action')) {
-                error_log('BP Group Clone: Nonce verification failed');
-                return;
-            }
+            // Remove nonce verification here as it's not needed for displaying the button
             ?>
             <script type="text/javascript">
             /* <![CDATA[ */
         jQuery(document).ready(function($) {
             console.log('BP Group Clone: jQuery ready function executed');
+            console.log('Adding clone buttons to group rows');
             $('.row-actions').each(function() {
                 var $this = $(this);
                 var groupId = $this.closest('tr').attr('id').replace('group-', '');
@@ -269,8 +267,11 @@ class BP_Group_Clone_Functions {
 
             $('body').on('click', '.bp-group-clone', function(e) {
                 e.preventDefault();
+                console.log('Clone button clicked');
                 var groupId = $(this).data('group-id');
                 var groupName = $(this).closest('tr').find('.column-title strong').text();
+                console.log('Group ID:', groupId);
+                console.log('Group Name:', groupName);
                 
                 var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
                     '<p>' + <?php echo wp_json_encode(__('Enter a name for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
