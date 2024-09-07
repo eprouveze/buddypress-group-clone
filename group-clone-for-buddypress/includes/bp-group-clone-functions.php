@@ -291,7 +291,7 @@ class BP_Group_Clone_Functions {
                         modal: true,
                         buttons: {
                             <?php echo wp_json_encode(__('Clone', 'buddypress-group-clone')); ?>: function() {
-                                var newGroupName = $('input#new_group_name').val();
+                                var newGroupName = cloneDialog.find('input#new_group_name').val();
                                 console.log('Retrieved Group Name:', newGroupName); // Debugging line
                                 if (!newGroupName) {
                                     console.error('Group name input is empty or not found.');
