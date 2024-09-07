@@ -15,8 +15,13 @@ Domain Path: /languages
 // Exit if accessed directly
 if (!defined('ABSPATH')) exit;
 
-// Define plugin path
-define('BP_GROUP_CLONE_PLUGIN_PATH', plugin_dir_path(__FILE__));
+// Define plugin constants
+define('BP_GROUP_CLONE_VERSION', '1.0.3');
+define('BP_GROUP_CLONE_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('BP_GROUP_CLONE_PLUGIN_URL', plugin_dir_url(__FILE__));
+
+// Include the main BP_Group_Clone class
+require_once BP_GROUP_CLONE_PLUGIN_DIR . 'includes/class-bp-group-clone.php';
 
 // Check if BuddyPress is active
 function bp_group_clone_check_buddypress() {
@@ -32,16 +37,14 @@ function bp_group_clone_buddypress_notice() {
     echo '<div class="error"><p>BuddyPress Group Clone requires BuddyPress to be installed and active.</p></div>';
 }
 
-// Load plugin functionality
+// Initialize the plugin
 function bp_group_clone_init() {
     if (bp_group_clone_check_buddypress()) {
-        require_once BP_GROUP_CLONE_PLUGIN_PATH . 'includes/bp-group-clone-functions.php';
-        if (is_admin()) {
-            add_action('admin_init', 'bp_group_clone_process');
-            add_action('admin_footer', 'bp_group_clone_add_admin_button');
-        } else {
-            add_action('bp_setup_nav', 'bp_group_clone_add_admin_nav_item');
-        }
+        $bp_group_clone = new BP_Group_Clone();
+        $bp_group_clone->run();
+        
+        // Initialize BP_Group_Clone_Functions
+        new BP_Group_Clone_Functions();
     }
 }
 add_action('plugins_loaded', 'bp_group_clone_init');
