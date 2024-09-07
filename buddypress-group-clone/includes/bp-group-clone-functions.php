@@ -77,11 +77,11 @@ class BP_Group_Clone_Functions {
 
     // Handle group cloning
     public function process_clone() {
-        if (isset($_POST['clone_group_submit']) && isset($_POST['clone_group_nonce']) && wp_verify_nonce($_POST['clone_group_nonce'], 'clone_group')) {
+        if (isset($_POST['clone_group_submit']) && isset($_POST['clone_group_nonce']) && wp_verify_nonce(wp_unslash($_POST['clone_group_nonce']), 'clone_group')) {
             $original_group_id = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
             $original_group = groups_get_group($original_group_id);
-            $new_group_name = isset($_POST['new_group_name']) ? sanitize_text_field($_POST['new_group_name']) : '';
-            $clone_components = isset($_POST['clone_components']) ? $_POST['clone_components'] : array();
+            $new_group_name = isset($_POST['new_group_name']) ? sanitize_text_field(wp_unslash($_POST['new_group_name'])) : '';
+            $clone_components = isset($_POST['clone_components']) ? array_map('sanitize_text_field', wp_unslash($_POST['clone_components'])) : array();
 
             if (empty($new_group_name)) {
                 bp_core_add_message(__('New group name cannot be empty.', 'buddypress-group-clone'), 'error');
@@ -238,6 +238,9 @@ class BP_Group_Clone_Functions {
         wp_enqueue_script('jquery-ui-dialog');
         wp_enqueue_style('wp-jquery-ui-dialog');
         add_action('admin_footer', function() {
+            if (!isset($_REQUEST['_wpnonce']) || !wp_verify_nonce(wp_unslash($_REQUEST['_wpnonce']), 'bp_groups_admin_action')) {
+                return;
+            }
             ?>
             <script type="text/javascript">
             /* <![CDATA[ */
