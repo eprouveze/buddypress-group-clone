@@ -11,6 +11,16 @@ class BP_Group_Clone_Functions {
         add_action('wp_ajax_bp_group_clone', array($this, 'process_clone'));
     }
 
+    // Log AJAX errors
+    public function log_ajax_error() {
+        if (isset($_POST['error_details'])) {
+            $error_details = wp_unslash($_POST['error_details']);
+            error_log('AJAX Error Details: ' . print_r($error_details, true));
+        }
+        wp_die(); // Required to terminate immediately and return a proper response
+    }
+    add_action('wp_ajax_bp_group_clone_log_error', array($this, 'log_ajax_error'));
+
     public function enqueue_admin_scripts() {
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-dialog');
@@ -325,7 +335,18 @@ class BP_Group_Clone_Functions {
                                     error: function(jqXHR, textStatus, errorThrown) {
                                         console.error('AJAX Error:', textStatus, errorThrown); // Debugging line
                                         console.error('Response Text:', jqXHR.responseText); // Debugging line
-                                        alert('An error occurred while cloning the group. Please check the console for more details.');
+                                        $.ajax({
+                                            url: ajaxurl,
+                                            type: 'POST',
+                                            data: {
+                                                action: 'bp_group_clone_log_error',
+                                                error_details: {
+                                                    textStatus: textStatus,
+                                                    errorThrown: errorThrown,
+                                                    responseText: jqXHR.responseText
+                                                }
+                                            }
+                                        });
                                     }
                                 });
                                 $(this).dialog("close");
