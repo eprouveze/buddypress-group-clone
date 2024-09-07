@@ -18,19 +18,19 @@ class BP_Group_Clone_Settings {
     }
 
     public function register_settings() {
-        register_setting('bp_group_clone_settings', 'bp_group_clone_default_options');
+        register_setting('bp_group_clone_settings', 'bp_group_clone_fields_to_clone');
 
         add_settings_section(
             'bp_group_clone_main_section',
-            __('Default Cloning Options', 'buddypress-group-clone'),
+            __('Fields to Clone', 'buddypress-group-clone'),
             null,
             'bp-group-clone-settings'
         );
 
 
         add_settings_field(
-            'bp_group_clone_default_components',
-            __('Default Components to Clone', 'buddypress-group-clone'),
+            'bp_group_clone_fields_to_clone',
+            __('Select Fields to Clone', 'buddypress-group-clone'),
             array($this, 'render_components_field'),
             'bp-group-clone-settings',
             'bp_group_clone_main_section'
@@ -54,13 +54,13 @@ class BP_Group_Clone_Settings {
     }
 
     public function render_components_field() {
-        $options = (array) get_option('bp_group_clone_default_options', array());
-        $components = array('members', 'forums', 'activity', 'media');
-        foreach ($components as $component) {
+        $options = (array) get_option('bp_group_clone_fields_to_clone', array());
+        $fields = array('name', 'type', 'status', 'members', 'forums', 'activity', 'media');
+        foreach ($fields as $field) {
             ?>
             <label>
-                <input type="checkbox" name="bp_group_clone_default_options[]" value="<?php echo esc_attr($component); ?>" <?php checked(in_array($component, $options)); ?>>
-                <?php echo esc_html(ucfirst($component)); ?>
+                <input type="checkbox" name="bp_group_clone_fields_to_clone[]" value="<?php echo esc_attr($field); ?>" <?php checked(in_array($field, $options)); ?>>
+                <?php echo esc_html(ucfirst($field)); ?>
             </label><br>
             <?php
         }
