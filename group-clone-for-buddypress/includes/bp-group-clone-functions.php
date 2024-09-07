@@ -294,7 +294,7 @@ class BP_Group_Clone_Functions {
                                     selectedComponents.push($(this).val());
                                 });
 
-                                if (newGroupName) {
+                                if (newGroupName && selectedComponents.length > 0) {
                                     $.ajax({
                                         url: ajaxurl,
                                         type: 'POST',
@@ -318,8 +318,10 @@ class BP_Group_Clone_Functions {
                                         }
                                     });
                                     $(this).dialog("close");
+                                } else if (!newGroupName) {
+                                    alert('Please enter a group name.');
                                 } else {
-                                    alert('Please enter a group name and select at least one component to clone.');
+                                    alert('Please select at least one component to clone.');
                                 }
                             },
                             "Cancel": function() {
