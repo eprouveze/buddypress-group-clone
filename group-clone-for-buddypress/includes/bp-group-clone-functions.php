@@ -294,7 +294,7 @@ class BP_Group_Clone_Functions {
                     console.log('Group Name:', groupName);
                     
                     var groupStatus = $(this).closest('tr').find('.column-status').text().trim();
-                    var groupType = $(this).closest('tr').find('.column-type').text().trim();
+                    var groupType = $(this).closest('tr').find('.column-group-type').text().trim();
                     var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
                         '<p>' + <?php echo wp_json_encode(__('Group Status: ', 'buddypress-group-clone')); ?> + groupStatus + '</p>' +
                         '<p>' + <?php echo wp_json_encode(__('Group Type: ', 'buddypress-group-clone')); ?> + groupType + '</p>' +
