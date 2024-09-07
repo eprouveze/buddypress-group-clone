@@ -78,7 +78,7 @@ This version adds the ability to clone group content and members. Please update 
 
 == Support ==
 
-For support, please create an issue in the [GitHub repository](https://github.com/EmmanuelProuveze/group-clone-for-buddypress).
+For support, please create an issue in the [GitHub repository](https://github.com/eprouveze/group-clone-for-buddypress).
 
 == Contributing ==
 
