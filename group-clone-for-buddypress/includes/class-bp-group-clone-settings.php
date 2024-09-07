@@ -54,7 +54,7 @@ class BP_Group_Clone_Settings {
     }
 
     public function render_components_field() {
-        $options = get_option('bp_group_clone_default_options', array());
+        $options = (array) get_option('bp_group_clone_default_options', array());
         $components = array('members', 'forums', 'activity', 'media');
         foreach ($components as $component) {
             ?>
