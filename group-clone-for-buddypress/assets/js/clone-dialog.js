@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
         var groupId = $this.closest('tr').attr('id').replace('group-', '');
         console.log('Processing group row with ID:', groupId); // Debugging line
         if ($this.find('.bp-group-clone').length === 0) {
-            $this.prepend('<span class="clone"><a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a> | </span>');
+            $this.prepend('<span class="clone"><a href="#" class="bp-group-clone" data-group-id="' + groupId + '">' + bpGroupCloneL10n.cloneText + '</a> | </span>');
             console.log('Clone button added for group ID:', groupId); // Debugging line
         }
     });
@@ -22,33 +22,33 @@ jQuery(document).ready(function($) {
         
         var groupStatus = $(this).closest('tr').find('.column-status').text().trim();
         var groupType = $(this).closest('tr').find('.column-group-type').text().trim();
-        var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
-            '<p>' + <?php echo wp_json_encode(__('Group Status: ', 'buddypress-group-clone')); ?> + groupStatus + '</p>' +
-            '<p>' + <?php echo wp_json_encode(__('Group Type: ', 'buddypress-group-clone')); ?> + groupType + '</p>' +
-            '<p>' + <?php echo wp_json_encode(__('Enter a name for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
+        var cloneDialog = $('<div title="' + bpGroupCloneL10n.cloneGroupTitle + '">' +
+            '<p>' + bpGroupCloneL10n.groupStatusText + groupStatus + '</p>' +
+            '<p>' + bpGroupCloneL10n.groupTypeText + groupType + '</p>' +
+            '<p>' + bpGroupCloneL10n.enterNameText + '</p>' +
             '<input type="text" id="new_group_name" value="' + groupName + '">' +
-            '<p>' + <?php echo wp_json_encode(__('Enter a status for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
+            '<p>' + bpGroupCloneL10n.enterStatusText + '</p>' +
             '<select id="new_group_status">' +
-                '<option value="public">' + <?php echo wp_json_encode(__('Public', 'buddypress-group-clone')); ?> + '</option>' +
-                '<option value="private">' + <?php echo wp_json_encode(__('Private', 'buddypress-group-clone')); ?> + '</option>' +
-                '<option value="hidden">' + <?php echo wp_json_encode(__('Hidden', 'buddypress-group-clone')); ?> + '</option>' +
+                '<option value="public">' + bpGroupCloneL10n.publicText + '</option>' +
+                '<option value="private">' + bpGroupCloneL10n.privateText + '</option>' +
+                '<option value="hidden">' + bpGroupCloneL10n.hiddenText + '</option>' +
             '</select>' +
-            '<p>' + <?php echo wp_json_encode(__('Enter a type for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
+            '<p>' + bpGroupCloneL10n.enterTypeText + '</p>' +
             '<select id="new_group_type">' +
-                '<option value="standard">' + <?php echo wp_json_encode(__('Standard', 'buddypress-group-clone')); ?> + '</option>' +
-                '<option value="special">' + <?php echo wp_json_encode(__('Special', 'buddypress-group-clone')); ?> + '</option>' +
+                '<option value="standard">' + bpGroupCloneL10n.standardText + '</option>' +
+                '<option value="special">' + bpGroupCloneL10n.specialText + '</option>' +
             '</select>' +
-            '<p>' + <?php echo wp_json_encode(__('Optional: Select additional components to clone:', 'buddypress-group-clone')); ?> + '</p>' +
-            '<label><input type="checkbox" name="clone_components[]" value="members"> ' + <?php echo wp_json_encode(__('Members', 'buddypress-group-clone')); ?> + '</label><br>' +
-            '<label><input type="checkbox" name="clone_components[]" value="forums"> ' + <?php echo wp_json_encode(__('Forums', 'buddypress-group-clone')); ?> + '</label><br>' +
-            '<label><input type="checkbox" name="clone_components[]" value="activity"> ' + <?php echo wp_json_encode(__('Activity', 'buddypress-group-clone')); ?> + '</label><br>' +
-            '<label><input type="checkbox" name="clone_components[]" value="media"> ' + <?php echo wp_json_encode(__('Media', 'buddypress-group-clone')); ?> + '</label><br>' +
+            '<p>' + bpGroupCloneL10n.optionalComponentsText + '</p>' +
+            '<label><input type="checkbox" name="clone_components[]" value="members"> ' + bpGroupCloneL10n.membersText + '</label><br>' +
+            '<label><input type="checkbox" name="clone_components[]" value="forums"> ' + bpGroupCloneL10n.forumsText + '</label><br>' +
+            '<label><input type="checkbox" name="clone_components[]" value="activity"> ' + bpGroupCloneL10n.activityText + '</label><br>' +
+            '<label><input type="checkbox" name="clone_components[]" value="media"> ' + bpGroupCloneL10n.mediaText + '</label><br>' +
             '</div>');
 
         cloneDialog.dialog({
             modal: true,
             buttons: {
-                <?php echo wp_json_encode(__('Clone', 'buddypress-group-clone')); ?>: function() {
+                bpGroupCloneL10n.cloneButtonText: function() {
                     var newGroupName = cloneDialog.find('input#new_group_name').val();
                     console.log('Retrieved Group Name:', newGroupName); // Debugging line
                     var selectedComponents = cloneDialog.find('input[name="clone_components[]"]:checked').map(function() {
