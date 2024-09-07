@@ -3,7 +3,7 @@
 Plugin Name: Group Clone for BuddyPress
 Plugin URI: https://github.com/eprouveze/group-clone-for-buddypress
 Description: Adds functionality to clone BuddyPress groups, including a button in the admin interface and group management area.
-Version: 1.1.0
+Version: 1.1.1
 Author: Emmanuel Prouvèze
 Author URI: https://www.prouveze.fr/
 License: GPL-2.0+
@@ -51,4 +51,4 @@ function group_clone_for_bp_init() {
         }
     }
 }
-add_action('plugins_loaded', 'group_clone_for_bp_init');
+add_action('bp_include', 'group_clone_for_bp_init');
