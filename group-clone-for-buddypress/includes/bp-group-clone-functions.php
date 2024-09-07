@@ -19,7 +19,6 @@ class BP_Group_Clone_Functions {
         }
         wp_die(); // Required to terminate immediately and return a proper response
     }
-    add_action('wp_ajax_bp_group_clone_log_error', array($this, 'log_ajax_error'));
 
     public function enqueue_admin_scripts() {
         wp_enqueue_script('jquery');
@@ -364,6 +363,8 @@ class BP_Group_Clone_Functions {
         });
     }
 }
+
+add_action('wp_ajax_bp_group_clone_log_error', array('BP_Group_Clone_Functions', 'log_ajax_error'));
 
 // Initialize the BP_Group_Clone_Functions class
 new BP_Group_Clone_Functions();
