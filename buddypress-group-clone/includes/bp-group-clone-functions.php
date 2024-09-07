@@ -97,14 +97,18 @@ class BP_Group_Clone_Functions {
     // Add clone button to admin groups list
     public function add_admin_button() {
         $screen = get_current_screen();
+        console.log('Current screen ID:', $screen->id);
         if ($screen->id !== 'groups') {
+            console.log('Not on the groups screen, clone button will not be added.');
             return;
         }
 
         ?>
         <script type="text/javascript">
         jQuery(document).ready(function($) {
+            console.log('Adding clone button to group rows.');
             $('.row-actions').each(function() {
+                console.log('Processing row:', $(this).closest('tr').attr('id'));
                 var $this = $(this);
                 var groupId = $this.closest('tr').attr('id').replace('group-', '');
                 $this.find('.delete').before('<span class="clone"> | <a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a></span>');
