@@ -1,14 +1,14 @@
 <?php
 /*
-Plugin Name: BuddyPress Group Clone
-Plugin URI: https://github.com/EmmanuelProuveze/buddypress-group-clone
+Plugin Name: Group Clone for BuddyPress
+Plugin URI: https://github.com/EmmanuelProuveze/group-clone-for-buddypress
 Description: Adds functionality to clone BuddyPress groups, including a button in the admin interface and group management area.
 Version: 1.1.0
 Author: Emmanuel Prouvèze
 Author URI: https://www.prouveze.fr/
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Text Domain: buddypress-group-clone
+Text Domain: group-clone-for-buddypress
 Domain Path: /languages
 */
 
@@ -16,35 +16,35 @@ Domain Path: /languages
 if (!defined('ABSPATH')) exit;
 
 // Define plugin constants
-define('BP_GROUP_CLONE_VERSION', '1.0.3');
-define('BP_GROUP_CLONE_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('BP_GROUP_CLONE_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('GROUP_CLONE_FOR_BP_VERSION', '1.1.0');
+define('GROUP_CLONE_FOR_BP_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('GROUP_CLONE_FOR_BP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
-// Include the main BP_Group_Clone class
-require_once BP_GROUP_CLONE_PLUGIN_DIR . 'includes/class-bp-group-clone.php';
+// Include the main Group_Clone_For_BP class
+require_once GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-group-clone-for-bp.php';
 
 // Check if BuddyPress is active
-function bp_group_clone_check_buddypress() {
+function group_clone_for_bp_check_buddypress() {
     if (!class_exists('BuddyPress')) {
-        add_action('admin_notices', 'bp_group_clone_buddypress_notice');
+        add_action('admin_notices', 'group_clone_for_bp_buddypress_notice');
         return false;
     }
     return true;
 }
 
 // Admin notice if BuddyPress is not active
-function bp_group_clone_buddypress_notice() {
-    echo '<div class="error"><p>BuddyPress Group Clone requires BuddyPress to be installed and active.</p></div>';
+function group_clone_for_bp_buddypress_notice() {
+    echo '<div class="error"><p>Group Clone for BuddyPress requires BuddyPress to be installed and active.</p></div>';
 }
 
 // Initialize the plugin
-function bp_group_clone_init() {
-    if (bp_group_clone_check_buddypress()) {
-        $bp_group_clone = new BP_Group_Clone();
-        $bp_group_clone->run();
+function group_clone_for_bp_init() {
+    if (group_clone_for_bp_check_buddypress()) {
+        $group_clone_for_bp = new Group_Clone_For_BP();
+        $group_clone_for_bp->run();
         
-        // Initialize BP_Group_Clone_Functions
-        new BP_Group_Clone_Functions();
+        // Initialize Group_Clone_For_BP_Functions
+        new Group_Clone_For_BP_Functions();
     }
 }
-add_action('plugins_loaded', 'bp_group_clone_init');
+add_action('plugins_loaded', 'group_clone_for_bp_init');
