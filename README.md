@@ -130,7 +130,7 @@ A: Currently, the plugin clones all group settings, members, and content. Custom
 
 ## Support
 
-If you encounter any issues or have questions, please open an issue on the [GitHub repository](https://github.com/EmmanuelProuveze/group-clone-for-buddypress/issues).
+If you encounter any issues or have questions, please open an issue on the [GitHub repository](https://github.com/eprouveze/group-clone-for-buddypress/issues).
 
 ## Contributing
 
