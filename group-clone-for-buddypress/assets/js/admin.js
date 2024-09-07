@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
         var groupId = $this.closest('tr').attr('id').replace('group-', '');
         console.log('Processing group row with ID:', groupId); // Debugging line
         if ($this.find('.bp-group-clone').length === 0) {
-            $this.prepend('<span class="clone"><a href="#" class="bp-group-clone" data-group-id="' + groupId + '">' + bpGroupCloneL10n.cloneText + '</a> | </span>');
+            $this.prepend('<span class="clone"><a href="#" class="bp-group-clone" data-group-id="' + groupId + '">' + (typeof bpGroupCloneL10n !== 'undefined' && bpGroupCloneL10n.cloneText ? bpGroupCloneL10n.cloneText : 'Clone') + '</a> | </span>');
             console.log('Clone button added for group ID:', groupId); // Debugging line
         }
     });

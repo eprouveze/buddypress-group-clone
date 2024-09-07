@@ -276,7 +276,7 @@ class BP_Group_Clone_Functions {
             wp_enqueue_script('jquery');
             wp_enqueue_script('jquery-ui-dialog');
             wp_enqueue_style('wp-jquery-ui-dialog');
-            wp_enqueue_script('bp-group-clone-dialog', plugins_url('../assets/js/clone-dialog.js', __FILE__), array('jquery', 'jquery-ui-dialog'), null, true);
+            wp_enqueue_script('bp-group-clone-dialog', plugins_url('assets/js/clone-dialog.js', __FILE__), array('jquery', 'jquery-ui-dialog'), null, true);
             wp_localize_script('bp-group-clone-dialog', 'bpGroupCloneNonce', array('nonce' => wp_create_nonce('bp_group_clone')));
         }
 
