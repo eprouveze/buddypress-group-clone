@@ -16,11 +16,11 @@ Domain Path: /languages
 defined('ABSPATH') || exit;
 
 // Define plugin constants
-define('GROUP_CLONE_FOR_BP_VERSION', '1.1.0');
+define('BP_GROUP_CLONE_VERSION', '1.1.0');
 define('BP_GROUP_CLONE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('BP_GROUP_CLONE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
-// Include the main Group_Clone_For_BP class and functions
+// Include the main BP_Group_Clone class and functions
 if (file_exists(BP_GROUP_CLONE_PLUGIN_DIR . 'includes/class-bp-group-clone.php')) {
     require_once BP_GROUP_CLONE_PLUGIN_DIR . 'includes/class-bp-group-clone.php';
 }
