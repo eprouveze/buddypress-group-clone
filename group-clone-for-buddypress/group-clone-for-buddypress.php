@@ -17,8 +17,8 @@ defined('ABSPATH') || exit;
 
 // Define plugin constants
 define('GROUP_CLONE_FOR_BP_VERSION', '1.1.0');
-define('GROUP_CLONE_FOR_BP_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('GROUP_CLONE_FOR_BP_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('BP_GROUP_CLONE_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('BP_GROUP_CLONE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Include the main Group_Clone_For_BP class and functions
 if (file_exists(GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-bp-group-clone.php')) {
