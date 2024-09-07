@@ -317,8 +317,10 @@ class BP_Group_Clone_Functions {
                                             alert('Error: ' + response.data);
                                         }
                                     },
-                                    error: function() {
-                                        alert('An error occurred while cloning the group.');
+                                    error: function(jqXHR, textStatus, errorThrown) {
+                                        console.error('AJAX Error:', textStatus, errorThrown); // Debugging line
+                                        console.error('Response Text:', jqXHR.responseText); // Debugging line
+                                        alert('An error occurred while cloning the group. Please check the console for more details.');
                                     }
                                 });
                                 $(this).dialog("close");
