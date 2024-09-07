@@ -261,6 +261,15 @@ class BP_Group_Clone_Functions {
                 $('.row-actions').each(function() {
                     var $this = $(this);
                     var groupId = $this.closest('tr').attr('id').replace('group-', '');
+                    console.log('Processing group row with ID:', groupId); // Debugging line
+                    if ($this.find('.bp-group-clone').length === 0) {
+                        $this.prepend('<span class="clone"><a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a> | </span>');
+                        console.log('Clone button added for group ID:', groupId); // Debugging line
+                    }
+                });
+                $('.row-actions').each(function() {
+                    var $this = $(this);
+                    var groupId = $this.closest('tr').attr('id').replace('group-', '');
                     if ($this.find('.bp-group-clone').length === 0) {
                         $this.prepend('<span class="clone"><a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a> | </span>');
                     }
