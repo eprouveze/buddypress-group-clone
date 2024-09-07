@@ -234,6 +234,8 @@ class BP_Group_Clone_Functions {
         }
 
         wp_enqueue_script('jquery');
+        wp_enqueue_script('jquery-ui-dialog');
+        wp_enqueue_style('wp-jquery-ui-dialog');
         add_action('admin_footer', function() {
             ?>
             <script type="text/javascript">
