@@ -22,10 +22,14 @@ BuddyPress Group Clone is a WordPress plugin that extends BuddyPress functionali
 2. Hover over a group name to see the action links
 3. Click on "Clone" next to the Edit, Delete, and View options
 
+![WordPress Admin Clone Button](https://example.com/path-to-your-image.png)
+
 ### In BuddyPress Group Management:
 1. Navigate to a group you manage
 2. Go to "Manage" > "Clone"
 3. Enter a name for the new group and click "Clone Group"
+
+![BuddyPress Group Clone UI](https://example.com/path-to-your-second-image.png)
 
 ## Requirements
 
