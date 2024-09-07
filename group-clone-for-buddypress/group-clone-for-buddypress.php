@@ -20,8 +20,9 @@ define('GROUP_CLONE_FOR_BP_VERSION', '1.1.0');
 define('GROUP_CLONE_FOR_BP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GROUP_CLONE_FOR_BP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
-// Include the main Group_Clone_For_BP class
+// Include the main Group_Clone_For_BP class and functions
 require_once GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-group-clone-for-bp.php';
+require_once GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-group-clone-for-bp-functions.php';
 
 // Check if BuddyPress is active
 function group_clone_for_bp_check_buddypress() {
@@ -44,7 +45,8 @@ function group_clone_for_bp_init() {
         $group_clone_for_bp->run();
         
         // Initialize Group_Clone_For_BP_Functions
-        new Group_Clone_For_BP_Functions();
+        $group_clone_for_bp_functions = new Group_Clone_For_BP_Functions();
+        $group_clone_for_bp_functions->init();
     }
 }
 add_action('plugins_loaded', 'group_clone_for_bp_init');
