@@ -53,7 +53,7 @@ function bp_group_clone_admin_screen_content() {
 // Handle group cloning
 function bp_group_clone_process() {
     if (isset($_POST['clone_group_submit']) && isset($_POST['clone_group_nonce']) && wp_verify_nonce($_POST['clone_group_nonce'], 'clone_group')) {
-        $original_group_id = bp_get_current_group_id();
+        $original_group_id = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
         $original_group = groups_get_group($original_group_id);
         $new_group_name = isset($_POST['new_group_name']) ? sanitize_text_field($_POST['new_group_name']) : '';
 
@@ -81,12 +81,51 @@ function bp_group_clone_process() {
             }
 
             bp_core_add_message(__('Group cloned successfully.', 'buddypress-group-clone'));
-            // Redirect to the new group's admin area
-            wp_safe_redirect(bp_get_group_permalink(groups_get_group($new_group_id)) . 'admin/');
+            // Redirect to the groups admin page
+            wp_safe_redirect(admin_url('admin.php?page=bp-groups'));
             exit;
         } else {
             bp_core_add_message(__('Failed to clone group', 'buddypress-group-clone'), 'error');
         }
     }
 }
-add_action('bp_actions', 'bp_group_clone_process');
+add_action('admin_init', 'bp_group_clone_process');
+
+// Add clone button to admin groups list
+function bp_group_clone_add_admin_button() {
+    $screen = get_current_screen();
+    if ($screen->id !== 'buddypress_page_bp-groups') {
+        return;
+    }
+
+    ?>
+    <script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $('.row-actions').each(function() {
+            var $this = $(this);
+            var groupId = $this.closest('tr').attr('id').replace('group-', '');
+            $this.append('<span class="clone"> | <a href="#" class="bp-group-clone" data-group-id="' + groupId + '">Clone</a></span>');
+        });
+
+        $(document).on('click', '.bp-group-clone', function(e) {
+            e.preventDefault();
+            var groupId = $(this).data('group-id');
+            var groupName = $(this).closest('tr').find('.column-title strong').text();
+            var newGroupName = prompt('Enter a name for the cloned group:', 'Copy of ' + groupName);
+            
+            if (newGroupName) {
+                var form = $('<form action="" method="post">' +
+                    '<input type="hidden" name="clone_group_submit" value="1">' +
+                    '<input type="hidden" name="clone_group_nonce" value="' + '<?php echo wp_create_nonce("clone_group"); ?>' + '">' +
+                    '<input type="hidden" name="group_id" value="' + groupId + '">' +
+                    '<input type="hidden" name="new_group_name" value="' + newGroupName + '">' +
+                    '</form>');
+                $('body').append(form);
+                form.submit();
+            }
+        });
+    });
+    </script>
+    <?php
+}
+add_action('admin_footer', 'bp_group_clone_add_admin_button');

@@ -33,7 +33,12 @@ function bp_group_clone_buddypress_notice() {
 function bp_group_clone_init() {
     if (bp_group_clone_check_buddypress()) {
         require_once BP_GROUP_CLONE_PLUGIN_PATH . 'includes/bp-group-clone-functions.php';
-        add_action('bp_setup_nav', 'bp_group_clone_add_admin_nav_item');
+        if (is_admin()) {
+            add_action('admin_init', 'bp_group_clone_process');
+            add_action('admin_footer', 'bp_group_clone_add_admin_button');
+        } else {
+            add_action('bp_setup_nav', 'bp_group_clone_add_admin_nav_item');
+        }
     }
 }
 add_action('plugins_loaded', 'bp_group_clone_init');
