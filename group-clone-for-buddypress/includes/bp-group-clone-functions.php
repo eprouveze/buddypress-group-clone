@@ -133,6 +133,7 @@ class BP_Group_Clone_Functions {
                     'redirect_url' => admin_url('admin.php?page=bp-groups')
                 ));
             } else {
+                error_log('Failed to clone group: ' . print_r($_POST, true)); // Debugging line
                 wp_send_json_error(__('Failed to clone group', 'buddypress-group-clone'));
             }
         }
@@ -272,8 +273,8 @@ class BP_Group_Clone_Functions {
                     console.log('Group ID:', groupId);
                     console.log('Group Name:', groupName);
                     
-                    var groupStatus = '<?php echo esc_js($original_group->status); ?>';
-                    var groupType = '<?php echo esc_js($original_group->enable_forum ? 'Forum' : 'Non-Forum'); ?>';
+                    var groupStatus = $(this).closest('tr').find('.column-status').text().trim();
+                    var groupType = $(this).closest('tr').find('.column-type').text().trim();
                     var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
                         '<p>' + <?php echo wp_json_encode(__('Group Status: ', 'buddypress-group-clone')); ?> + groupStatus + '</p>' +
                         '<p>' + <?php echo wp_json_encode(__('Group Type: ', 'buddypress-group-clone')); ?> + groupType + '</p>' +
