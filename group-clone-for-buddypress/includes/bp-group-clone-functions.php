@@ -276,7 +276,7 @@ class BP_Group_Clone_Functions {
                     
                     var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
                         '<p>' + <?php echo wp_json_encode(__('Enter a name for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
-                        '<input type="text" id="new-group-name" value="' + groupName + '">' +
+                        '<input type="text" id="new_group_name" value="' + groupName + '">' +
                         '<p>' + <?php echo wp_json_encode(__('Optional: Select additional components to clone:', 'buddypress-group-clone')); ?> + '</p>' +
                         '<label><input type="checkbox" name="clone_components[]" value="members"> ' + <?php echo wp_json_encode(__('Members', 'buddypress-group-clone')); ?> + '</label><br>' +
                         '<label><input type="checkbox" name="clone_components[]" value="forums"> ' + <?php echo wp_json_encode(__('Forums', 'buddypress-group-clone')); ?> + '</label><br>' +
