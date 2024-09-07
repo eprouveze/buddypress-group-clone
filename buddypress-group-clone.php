@@ -3,9 +3,9 @@
  * Plugin Name: BuddyPress Group Clone
  * Plugin URI: https://github.com/buddypress/bp-group-clone
  * Description: Allows admins to clone BuddyPress groups.
- * Version: 1.0.2
- * Author: BuddyPress, Your Name
- * Author URI: https://buddypress.org
+ * Version: 1.0.3
+ * Author: BuddyPress, Emmanuel Prouvèze
+ * Author URI: https://www.prouveze.fr/
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: buddypress-group-clone

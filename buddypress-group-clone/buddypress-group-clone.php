@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: BuddyPress Group Clone
-Plugin URI: https://github.com/yourusername/buddypress-group-clone
+Plugin URI: https://github.com/EmmanuelProuveze/buddypress-group-clone
 Description: Adds functionality to clone BuddyPress groups, including a button in the admin interface and group management area.
-Version: 1.0.0
-Author: Your Name
-Author URI: https://yourwebsite.com
+Version: 1.0.3
+Author: Emmanuel Prouvèze
+Author URI: https://www.prouveze.fr/
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 Text Domain: buddypress-group-clone
