@@ -23,7 +23,8 @@ class BP_Group_Clone {
     }
 
     public function run() {
-        add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
+        $this->load_plugin_textdomain();
+        $this->setup_group_clone_functions();
     }
 
     public function setup_group_clone_functions() {
