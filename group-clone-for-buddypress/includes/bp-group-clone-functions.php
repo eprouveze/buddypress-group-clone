@@ -111,6 +111,8 @@ class BP_Group_Clone_Functions {
             }
 
             // Create new group
+            $group_status = !empty($original_group->status) ? $original_group->status : 'public'; // Default to 'public' if status is not set
+
             $new_group_id = groups_create_group(array(
                 'creator_id' => get_current_user_id(),
                 'name' => $new_group_name,
