@@ -309,6 +309,7 @@ class BP_Group_Clone_Functions {
                                         _wpnonce: bpGroupCloneNonce
                                     },
                                     success: function(response) {
+                                        console.log('AJAX Response:', response); // Debugging line
                                         if (response.success) {
                                             alert('Group cloned successfully!');
                                             location.reload();
