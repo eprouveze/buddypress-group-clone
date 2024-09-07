@@ -241,9 +241,7 @@ class BP_Group_Clone_Functions {
             <script type="text/javascript">
             /* <![CDATA[ */
         jQuery(document).ready(function($) {
-            console.log('Adding clone button to group rows.');
             $('.row-actions').each(function() {
-                console.log('Processing row:', $(this).closest('tr').attr('id'));
                 var $this = $(this);
                 var groupId = $this.closest('tr').attr('id').replace('group-', '');
                 if ($this.find('.bp-group-clone').length === 0) {
@@ -253,10 +251,8 @@ class BP_Group_Clone_Functions {
 
             $('body').on('click', '.bp-group-clone', function(e) {
                 e.preventDefault();
-                console.log('Clone button clicked');
                 var groupId = $(this).data('group-id');
                 var groupName = $(this).closest('tr').find('.column-title strong').text();
-                console.log('Group ID:', groupId, 'Group Name:', groupName);
                 
                 var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
                     '<p>' + <?php echo wp_json_encode(__('Enter a name for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
