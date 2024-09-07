@@ -1,13 +1,13 @@
 <?php
 // Exit if accessed directly
-if (!defined('ABSPATH')) exit;
+defined('ABSPATH') || exit;
 
 class BP_Group_Clone_Functions {
 
     public function __construct() {
         add_action('bp_setup_nav', array($this, 'add_admin_nav_item'));
         add_action('admin_init', array($this, 'process_clone'));
-        add_action('admin_menu', array($this, 'add_admin_button'));
+        add_action('admin_enqueue_scripts', array($this, 'add_admin_button'));
     }
 
     // Add "Clone Group" form to group admin area
@@ -97,13 +97,15 @@ class BP_Group_Clone_Functions {
     // Add clone button to admin groups list
     public function add_admin_button() {
         global $pagenow;
-        if ($pagenow != 'admin.php' || !isset($_GET['page']) || $_GET['page'] != 'bp-groups') {
+        if ($pagenow !== 'admin.php' || !isset($_GET['page']) || $_GET['page'] !== 'bp-groups') {
             return;
         }
 
+        wp_enqueue_script('jquery');
         add_action('admin_footer', function() {
             ?>
             <script type="text/javascript">
+            /* <![CDATA[ */
         jQuery(document).ready(function($) {
             console.log('Adding clone button to group rows.');
             $('.row-actions').each(function() {
@@ -133,6 +135,7 @@ class BP_Group_Clone_Functions {
         });
         </script>
         <?php
+        });
     }
 }
 
