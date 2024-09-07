@@ -17,22 +17,22 @@ class BP_Group_Clone_Functions {
             $form_action = bp_get_group_permalink(groups_get_current_group()) . 'admin/clone/';
             ?>
             <div class="bp-group-clone-admin-form">
-                <h3><?php _e('Clone Group', 'buddypress-group-clone'); ?></h3>
+                <h3><?php esc_html_e('Clone Group', 'buddypress-group-clone'); ?></h3>
                 <form action="<?php echo esc_url($form_action); ?>" method="post">
                     <div class="bp-group-clone-form-field">
-                        <label for="new_group_name"><?php _e('New Group Name:', 'buddypress-group-clone'); ?></label>
+                        <label for="new_group_name"><?php esc_html_e('New Group Name:', 'buddypress-group-clone'); ?></label>
                         <input type="text" id="new_group_name" name="new_group_name" required>
                     </div>
                     <div class="bp-group-clone-form-field">
-                        <h4><?php _e('Select Components to Clone:', 'buddypress-group-clone'); ?></h4>
-                        <label><input type="checkbox" name="clone_components[]" value="members" checked> <?php _e('Members', 'buddypress-group-clone'); ?></label><br>
-                        <label><input type="checkbox" name="clone_components[]" value="forums" checked> <?php _e('Forums', 'buddypress-group-clone'); ?></label><br>
-                        <label><input type="checkbox" name="clone_components[]" value="activity" checked> <?php _e('Activity', 'buddypress-group-clone'); ?></label><br>
-                        <label><input type="checkbox" name="clone_components[]" value="media" checked> <?php _e('Media', 'buddypress-group-clone'); ?></label><br>
+                        <h4><?php esc_html_e('Select Components to Clone:', 'buddypress-group-clone'); ?></h4>
+                        <label><input type="checkbox" name="clone_components[]" value="members" checked> <?php esc_html_e('Members', 'buddypress-group-clone'); ?></label><br>
+                        <label><input type="checkbox" name="clone_components[]" value="forums" checked> <?php esc_html_e('Forums', 'buddypress-group-clone'); ?></label><br>
+                        <label><input type="checkbox" name="clone_components[]" value="activity" checked> <?php esc_html_e('Activity', 'buddypress-group-clone'); ?></label><br>
+                        <label><input type="checkbox" name="clone_components[]" value="media" checked> <?php esc_html_e('Media', 'buddypress-group-clone'); ?></label><br>
                     </div>
                     <div class="bp-group-clone-form-field">
-                        <button type="button" id="select-all"><?php _e('Select All', 'buddypress-group-clone'); ?></button>
-                        <button type="button" id="deselect-all"><?php _e('Deselect All', 'buddypress-group-clone'); ?></button>
+                        <button type="button" id="select-all"><?php esc_html_e('Select All', 'buddypress-group-clone'); ?></button>
+                        <button type="button" id="deselect-all"><?php esc_html_e('Deselect All', 'buddypress-group-clone'); ?></button>
                     </div>
                     <?php wp_nonce_field('clone_group', 'clone_group_nonce'); ?>
                     <div class="bp-group-clone-submit">
@@ -278,7 +278,7 @@ class BP_Group_Clone_Functions {
                             if (newGroupName && selectedComponents.length > 0) {
                                 var form = $('<form action="" method="post">' +
                                     '<input type="hidden" name="clone_group_submit" value="1">' +
-                                    '<input type="hidden" name="clone_group_nonce" value="' + '<?php echo wp_create_nonce("clone_group"); ?>' + '">' +
+                                    '<input type="hidden" name="clone_group_nonce" value="' + '<?php echo esc_attr(wp_create_nonce("clone_group")); ?>' + '">' +
                                     '<input type="hidden" name="group_id" value="' + groupId + '">' +
                                     '<input type="hidden" name="new_group_name" value="' + newGroupName + '">' +
                                     '</form>');
