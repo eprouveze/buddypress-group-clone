@@ -293,10 +293,9 @@ class BP_Group_Clone_Functions {
                             <?php echo wp_json_encode(__('Clone', 'buddypress-group-clone')); ?>: function() {
                                 var newGroupName = cloneDialog.find('input#new_group_name').val();
                                 console.log('Retrieved Group Name:', newGroupName); // Debugging line
-                                var selectedComponents = [];
-                                $('input[name="clone_components[]"]:checked').each(function() {
-                                    selectedComponents.push($(this).val());
-                                });
+                                var selectedComponents = cloneDialog.find('input[name="clone_components[]"]:checked').map(function() {
+                                    return $(this).val();
+                                }).get();
 
                                 if (!newGroupName) {
                                     alert('Please enter a group name.');
