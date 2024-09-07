@@ -288,7 +288,7 @@ class BP_Group_Clone_Functions {
                         modal: true,
                         buttons: {
                             <?php echo wp_json_encode(__('Clone', 'buddypress-group-clone')); ?>: function() {
-                                var newGroupName = $('input#new-group-name').val();
+                                var newGroupName = $('input#new_group_name').val();
                                 var selectedComponents = [];
                                 $('input[name="clone_components[]"]:checked').each(function() {
                                     selectedComponents.push($(this).val());
