@@ -258,20 +258,20 @@ class BP_Group_Clone_Functions {
                 var groupName = $(this).closest('tr').find('.column-title strong').text();
                 console.log('Group ID:', groupId, 'Group Name:', groupName);
                 
-                var cloneDialog = $('<div title="Clone Group">' +
-                    '<p>Enter a name for the cloned group:</p>' +
-                    '<input type="text" id="new-group-name" value="Copy of ' + groupName + '">' +
-                    '<p>Select components to clone:</p>' +
-                    '<label><input type="checkbox" name="clone_components[]" value="members" checked> Members</label><br>' +
-                    '<label><input type="checkbox" name="clone_components[]" value="forums" checked> Forums</label><br>' +
-                    '<label><input type="checkbox" name="clone_components[]" value="activity" checked> Activity</label><br>' +
-                    '<label><input type="checkbox" name="clone_components[]" value="media" checked> Media</label><br>' +
+                var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
+                    '<p>' + <?php echo wp_json_encode(__('Enter a name for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
+                    '<input type="text" id="new-group-name" value="' + groupName + '">' +
+                    '<p>' + <?php echo wp_json_encode(__('Select components to clone:', 'buddypress-group-clone')); ?> + '</p>' +
+                    '<label><input type="checkbox" name="clone_components[]" value="members"> ' + <?php echo wp_json_encode(__('Members', 'buddypress-group-clone')); ?> + '</label><br>' +
+                    '<label><input type="checkbox" name="clone_components[]" value="forums"> ' + <?php echo wp_json_encode(__('Forums', 'buddypress-group-clone')); ?> + '</label><br>' +
+                    '<label><input type="checkbox" name="clone_components[]" value="activity"> ' + <?php echo wp_json_encode(__('Activity', 'buddypress-group-clone')); ?> + '</label><br>' +
+                    '<label><input type="checkbox" name="clone_components[]" value="media"> ' + <?php echo wp_json_encode(__('Media', 'buddypress-group-clone')); ?> + '</label><br>' +
                     '</div>');
 
                 cloneDialog.dialog({
                     modal: true,
                     buttons: {
-                        "Clone": function() {
+                        <?php echo wp_json_encode(__('Clone', 'buddypress-group-clone')); ?>: function() {
                             var newGroupName = $('#new-group-name').val();
                             var selectedComponents = [];
                             $('input[name="clone_components[]"]:checked').each(function() {
