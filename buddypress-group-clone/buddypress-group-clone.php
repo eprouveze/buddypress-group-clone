@@ -1,12 +1,15 @@
 <?php
 /*
 Plugin Name: BuddyPress Group Clone
-Plugin URI: https://example.com/buddypress-group-clone
-Description: Adds a button to clone a group in BuddyPress (only the settings, not the group contents)
-Version: 1.0
+Plugin URI: https://github.com/yourusername/buddypress-group-clone
+Description: Adds functionality to clone BuddyPress groups, including a button in the admin interface and group management area.
+Version: 1.0.0
 Author: Your Name
-Author URI: https://example.com
-License: GPL2
+Author URI: https://yourwebsite.com
+License: GPL-2.0+
+License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+Text Domain: buddypress-group-clone
+Domain Path: /languages
 */
 
 // Exit if accessed directly
