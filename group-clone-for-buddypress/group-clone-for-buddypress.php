@@ -28,6 +28,8 @@ if (file_exists(BP_GROUP_CLONE_PLUGIN_DIR . 'includes/bp-group-clone-functions.p
     require_once BP_GROUP_CLONE_PLUGIN_DIR . 'includes/bp-group-clone-functions.php';
 }
 
+require_once BP_GROUP_CLONE_PLUGIN_DIR . 'includes/class-bp-group-clone-settings.php';
+
 // Check if BuddyPress is active
 function group_clone_for_bp_check_buddypress() {
     if (!function_exists('buddypress')) {
