@@ -11,9 +11,12 @@ BuddyPress Group Clone is a WordPress plugin that extends BuddyPress functionali
 
 ## Installation
 
-1. Upload the `buddypress-group-clone` folder to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Ensure BuddyPress is installed and activated
+1. Download the plugin zip file
+2. Log in to your WordPress admin panel and navigate to Plugins > Add New
+3. Click on the "Upload Plugin" button at the top of the page
+4. Choose the zip file you downloaded and click "Install Now"
+5. Once installed, click "Activate Plugin"
+6. Ensure BuddyPress is installed and activated
 
 ## Usage
 
