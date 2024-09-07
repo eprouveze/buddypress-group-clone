@@ -271,12 +271,14 @@ class BP_Group_Clone_Functions {
                     console.log('Clone button clicked');
                     var groupId = $(this).data('group-id');
                     var groupName = $(this).closest('tr').find('.column-title strong').text();
+                    console.log('Initial Group Name:', groupName); // Debugging line
                     console.log('Group ID:', groupId);
                     console.log('Group Name:', groupName);
                     
                     var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
                         '<p>' + <?php echo wp_json_encode(__('Enter a name for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
                         '<input type="text" id="new_group_name" value="' + groupName + '">' +
+                        console.log('Input Field Value Set:', groupName); // Debugging line
                         '<p>' + <?php echo wp_json_encode(__('Optional: Select additional components to clone:', 'buddypress-group-clone')); ?> + '</p>' +
                         '<label><input type="checkbox" name="clone_components[]" value="members"> ' + <?php echo wp_json_encode(__('Members', 'buddypress-group-clone')); ?> + '</label><br>' +
                         '<label><input type="checkbox" name="clone_components[]" value="forums"> ' + <?php echo wp_json_encode(__('Forums', 'buddypress-group-clone')); ?> + '</label><br>' +
