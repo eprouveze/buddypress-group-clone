@@ -49,22 +49,16 @@ function bp_group_clone_admin_screen() {
 function bp_group_clone_admin_screen_content() {
     bp_group_clone_add_admin_form();
 }
-            <input type="submit" name="clone_group_submit" value="Clone Group" class="button">
-        </form>
-        <?php
-    }
-}
-add_action('bp_group_admin_pagination', 'bp_group_clone_add_admin_form');
 
 // Handle group cloning
 function bp_group_clone_process() {
-    if (isset($_POST['clone_group_submit']) && wp_verify_nonce($_POST['clone_group_nonce'], 'clone_group')) {
+    if (isset($_POST['clone_group_submit']) && isset($_POST['clone_group_nonce']) && wp_verify_nonce($_POST['clone_group_nonce'], 'clone_group')) {
         $original_group_id = bp_get_current_group_id();
         $original_group = groups_get_group($original_group_id);
-        $new_group_name = sanitize_text_field($_POST['new_group_name']);
+        $new_group_name = isset($_POST['new_group_name']) ? sanitize_text_field($_POST['new_group_name']) : '';
 
         if (empty($new_group_name)) {
-            bp_core_add_message('New group name cannot be empty.', 'error');
+            bp_core_add_message(__('New group name cannot be empty.', 'buddypress-group-clone'), 'error');
             return;
         }
 
@@ -86,12 +80,12 @@ function bp_group_clone_process() {
                 groups_update_groupmeta($new_group_id, $meta_key, $meta_value);
             }
 
-            bp_core_add_message('Group cloned successfully.');
+            bp_core_add_message(__('Group cloned successfully.', 'buddypress-group-clone'));
             // Redirect to the new group's admin area
-            wp_redirect(bp_get_group_permalink(groups_get_group($new_group_id)) . 'admin/');
+            wp_safe_redirect(bp_get_group_permalink(groups_get_group($new_group_id)) . 'admin/');
             exit;
         } else {
-            bp_core_add_message('Failed to clone group', 'error');
+            bp_core_add_message(__('Failed to clone group', 'buddypress-group-clone'), 'error');
         }
     }
 }
