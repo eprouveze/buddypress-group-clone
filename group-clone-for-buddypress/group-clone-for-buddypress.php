@@ -49,11 +49,6 @@ function group_clone_for_bp_init() {
             $group_clone_for_bp = new BP_Group_Clone();
             $group_clone_for_bp->run();
         }
-        
-        // Initialize functions
-        if (function_exists('bp_group_clone_init')) {
-            bp_group_clone_init();
-        }
     }
 }
 add_action('plugins_loaded', 'group_clone_for_bp_init');
