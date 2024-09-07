@@ -310,7 +310,6 @@ class BP_Group_Clone_Functions {
 
 // Initialize the BP_Group_Clone_Functions class
 new BP_Group_Clone_Functions();
-<?php
 
 class BP_Group_Clone_Functions {
 
