@@ -42,6 +42,9 @@ function bp_group_clone_init() {
     if (bp_group_clone_check_buddypress()) {
         $bp_group_clone = new BP_Group_Clone();
         $bp_group_clone->run();
+        
+        // Initialize BP_Group_Clone_Functions
+        new BP_Group_Clone_Functions();
     }
 }
 add_action('plugins_loaded', 'bp_group_clone_init');

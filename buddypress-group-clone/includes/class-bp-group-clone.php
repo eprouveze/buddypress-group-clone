@@ -13,12 +13,11 @@ class BP_Group_Clone {
     }
 
     private function define_admin_hooks() {
-        add_action('admin_init', 'bp_group_clone_process');
-        add_action('admin_footer', 'bp_group_clone_add_admin_button');
+        // These hooks are now handled by BP_Group_Clone_Functions
     }
 
     private function define_public_hooks() {
-        add_action('bp_setup_nav', 'bp_group_clone_add_admin_nav_item');
+        // These hooks are now handled by BP_Group_Clone_Functions
     }
 
     public function run() {
