@@ -25,30 +25,7 @@ function bp_group_clone_add_admin_form() {
     }
 }
 
-function bp_group_clone_add_admin_nav_item() {
-    if (bp_is_group() && bp_group_is_admin()) {
-        $group = groups_get_current_group();
-        bp_core_new_subnav_item(array(
-            'name' => __('Clone', 'buddypress-group-clone'),
-            'slug' => 'clone',
-            'parent_url' => bp_get_group_permalink($group),
-            'parent_slug' => $group->slug,
-            'screen_function' => 'bp_group_clone_admin_screen',
-            'position' => 100,
-            'user_has_access' => bp_group_is_admin()
-        ));
-    }
-}
-add_action('bp_setup_nav', 'bp_group_clone_add_admin_nav_item');
-
-function bp_group_clone_admin_screen() {
-    add_action('bp_template_content', 'bp_group_clone_admin_screen_content');
-    bp_core_load_template(apply_filters('bp_core_template_plugin', 'groups/single/plugins'));
-}
-
-function bp_group_clone_admin_screen_content() {
-    bp_group_clone_add_admin_form();
-}
+// Removed bp_group_clone_add_admin_nav_item function and its action hook
 
 // Handle group cloning
 function bp_group_clone_process() {
