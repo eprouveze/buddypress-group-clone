@@ -13,6 +13,16 @@ class BP_Group_Clone_Functions {
         add_action('wp_ajax_bp_group_clone_log_error', array($this, 'log_ajax_error'));
         wp_localize_script('bp-group-clone-admin', 'bpGroupCloneL10n', array(
             'cloneText' => __('Clone', 'buddypress-group-clone')
+            'cloneGroupTitle' => __('Clone Group', 'buddypress-group-clone'),
+            'groupStatusText' => __('Group Status: ', 'buddypress-group-clone'),
+            'groupTypeText' => __('Group Type: ', 'buddypress-group-clone'),
+            'enterNameText' => __('Enter a name for the cloned group:', 'buddypress-group-clone'),
+            'optionalComponentsText' => __('Optional: Select additional components to clone:', 'buddypress-group-clone'),
+            'membersText' => __('Members', 'buddypress-group-clone'),
+            'forumsText' => __('Forums', 'buddypress-group-clone'),
+            'activityText' => __('Activity', 'buddypress-group-clone'),
+            'mediaText' => __('Media', 'buddypress-group-clone'),
+            'cloneButtonText' => __('Clone', 'buddypress-group-clone')
         ));
     }
 
