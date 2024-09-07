@@ -175,36 +175,35 @@ class BP_Group_Clone_Functions {
     }
 
     private function clone_activity($original_group_id, $new_group_id) {
-        global $wpdb;
-        $activity_ids = $wpdb->get_col($wpdb->prepare(
-            "SELECT id FROM {$wpdb->prefix}bp_activity WHERE component = 'groups' AND item_id = %d",
-            $original_group_id
-        ));
+        $cache_key = 'bp_group_clone_activity_' . $original_group_id;
+        $activity_ids = wp_cache_get($cache_key);
+
+        if (false === $activity_ids) {
+            $activity_ids = BP_Activity_Activity::get_activity_ids(array(
+                'component' => 'groups',
+                'item_id' => $original_group_id,
+            ));
+            wp_cache_set($cache_key, $activity_ids, 'bp_group_clone', 3600); // Cache for 1 hour
+        }
 
         foreach ($activity_ids as $activity_id) {
-            $activity = bp_activity_get_specific(array('activity_ids' => $activity_id));
-            if (!empty($activity['activities'])) {
-                $activity_data = $activity['activities'][0];
-                
-                // Check for dependencies
-                $has_dependencies = false;
-                if ($activity_data->type === 'bbp_reply_create' || $activity_data->type === 'bbp_topic_create') {
-                    $has_dependencies = true;
-                }
+            $activity = new BP_Activity_Activity($activity_id);
+            
+            // Check for dependencies
+            $has_dependencies = in_array($activity->type, array('bbp_reply_create', 'bbp_topic_create'), true);
 
-                if (!$has_dependencies) {
-                    bp_activity_add(array(
-                        'user_id' => $activity_data->user_id,
-                        'action' => $activity_data->action,
-                        'content' => $activity_data->content,
-                        'primary_link' => $activity_data->primary_link,
-                        'component' => 'groups',
-                        'type' => $activity_data->type,
-                        'item_id' => $new_group_id,
-                        'secondary_item_id' => $activity_data->secondary_item_id,
-                        'date_recorded' => $activity_data->date_recorded,
-                    ));
-                }
+            if (!$has_dependencies) {
+                bp_activity_add(array(
+                    'user_id' => $activity->user_id,
+                    'action' => $activity->action,
+                    'content' => $activity->content,
+                    'primary_link' => $activity->primary_link,
+                    'component' => 'groups',
+                    'type' => $activity->type,
+                    'item_id' => $new_group_id,
+                    'secondary_item_id' => $activity->secondary_item_id,
+                    'date_recorded' => $activity->date_recorded,
+                ));
             }
         }
     }
