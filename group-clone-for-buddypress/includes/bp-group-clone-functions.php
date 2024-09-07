@@ -128,6 +128,9 @@ class BP_Group_Clone_Functions {
                 // Clone selected components
                 if (in_array('members', $clone_components)) {
                     $this->clone_members($original_group_id, $new_group_id);
+                } else {
+                    // Ensure the creator is added as a member if no members are cloned
+                    groups_join_group($new_group_id, get_current_user_id());
                 }
                 if (in_array('forums', $clone_components)) {
                     $this->clone_forums($original_group_id, $new_group_id);
