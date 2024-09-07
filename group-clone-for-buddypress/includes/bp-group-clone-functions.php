@@ -11,6 +11,9 @@ class BP_Group_Clone_Functions {
         add_action('wp_ajax_bp_group_clone', array($this, 'process_clone'));
         add_action('wp_ajax_bp_group_clone', array($this, 'process_clone'));
         add_action('wp_ajax_bp_group_clone_log_error', array($this, 'log_ajax_error'));
+        wp_localize_script('bp-group-clone-admin', 'bpGroupCloneL10n', array(
+            'cloneText' => __('Clone', 'buddypress-group-clone')
+        ));
     }
 
     // Log AJAX errors
