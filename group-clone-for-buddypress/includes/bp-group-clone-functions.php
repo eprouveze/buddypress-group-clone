@@ -295,6 +295,8 @@ class BP_Group_Clone_Functions {
                                 console.log('Retrieved Group Name:', newGroupName); // Debugging line
                                 if (!newGroupName) {
                                     console.error('Group name input is empty or not found.');
+                                    alert('Please enter a group name.');
+                                    return;
                                 }
                                 var selectedComponents = [];
                                 $('input[name="clone_components[]"]:checked').each(function() {
