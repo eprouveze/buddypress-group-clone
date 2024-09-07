@@ -6,9 +6,9 @@ class BP_Group_Clone_Functions {
 
     public function __construct() {
         add_action('bp_setup_nav', array($this, 'add_admin_nav_item'));
-        add_action('admin_init', array($this, 'process_clone'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('admin_enqueue_scripts', array($this, 'add_admin_button'));
+        add_action('wp_ajax_bp_group_clone', array($this, 'process_clone'));
     }
 
     public function enqueue_admin_scripts() {
@@ -250,77 +250,144 @@ class BP_Group_Clone_Functions {
         wp_enqueue_style('wp-jquery-ui-dialog');
         add_action('admin_footer', function() {
             error_log('BP Group Clone: admin_footer action triggered');
-            // Remove nonce verification here as it's not needed for displaying the button
+            $nonce = wp_create_nonce('bp_group_clone');
             ?>
             <script type="text/javascript">
             /* <![CDATA[ */
-        jQuery(document).ready(function($) {
-            console.log('BP Group Clone: jQuery ready function executed');
-            console.log('Adding clone buttons to group rows');
-            $('.row-actions').each(function() {
-                var $this = $(this);
-                var groupId = $this.closest('tr').attr('id').replace('group-', '');
-                if ($this.find('.bp-group-clone').length === 0) {
-                    $this.prepend('<span class="clone"><a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a> | </span>');
-                }
-            });
-
-            $('body').on('click', '.bp-group-clone', function(e) {
-                e.preventDefault();
-                console.log('Clone button clicked');
-                var groupId = $(this).data('group-id');
-                var groupName = $(this).closest('tr').find('.column-title strong').text();
-                console.log('Group ID:', groupId);
-                console.log('Group Name:', groupName);
-                
-                var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
-                    '<p>' + <?php echo wp_json_encode(__('Enter a name for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
-                    '<input type="text" id="new-group-name" value="' + groupName + '">' +
-                    '<p>' + <?php echo wp_json_encode(__('Select components to clone:', 'buddypress-group-clone')); ?> + '</p>' +
-                    '<label><input type="checkbox" name="clone_components[]" value="members"> ' + <?php echo wp_json_encode(__('Members', 'buddypress-group-clone')); ?> + '</label><br>' +
-                    '<label><input type="checkbox" name="clone_components[]" value="forums"> ' + <?php echo wp_json_encode(__('Forums', 'buddypress-group-clone')); ?> + '</label><br>' +
-                    '<label><input type="checkbox" name="clone_components[]" value="activity"> ' + <?php echo wp_json_encode(__('Activity', 'buddypress-group-clone')); ?> + '</label><br>' +
-                    '<label><input type="checkbox" name="clone_components[]" value="media"> ' + <?php echo wp_json_encode(__('Media', 'buddypress-group-clone')); ?> + '</label><br>' +
-                    '</div>');
-
-                cloneDialog.dialog({
-                    modal: true,
-                    buttons: {
-                        <?php echo wp_json_encode(__('Clone', 'buddypress-group-clone')); ?>: function() {
-                            var newGroupName = $('#new-group-name').val();
-                            var selectedComponents = [];
-                            $('input[name="clone_components[]"]:checked').each(function() {
-                                selectedComponents.push($(this).val());
-                            });
-
-                            if (newGroupName && selectedComponents.length > 0) {
-                                var form = $('<form action="" method="post">' +
-                                    '<input type="hidden" name="clone_group_submit" value="1">' +
-                                    '<input type="hidden" name="clone_group_nonce" value="' + '<?php echo esc_attr(wp_create_nonce("clone_group")); ?>' + '">' +
-                                    '<input type="hidden" name="group_id" value="' + groupId + '">' +
-                                    '<input type="hidden" name="new_group_name" value="' + newGroupName + '">' +
-                                    '</form>');
-                                
-                                $.each(selectedComponents, function(index, value) {
-                                    form.append('<input type="hidden" name="clone_components[]" value="' + value + '">');
-                                });
-
-                                $('body').append(form);
-                                form.submit();
-                            } else {
-                                alert('Please enter a group name and select at least one component to clone.');
-                            }
-                        },
-                        "Cancel": function() {
-                            $(this).dialog("close");
-                        }
+            var bpGroupCloneNonce = '<?php echo $nonce; ?>';
+            jQuery(document).ready(function($) {
+                console.log('BP Group Clone: jQuery ready function executed');
+                console.log('Adding clone buttons to group rows');
+                $('.row-actions').each(function() {
+                    var $this = $(this);
+                    var groupId = $this.closest('tr').attr('id').replace('group-', '');
+                    if ($this.find('.bp-group-clone').length === 0) {
+                        $this.prepend('<span class="clone"><a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a> | </span>');
                     }
                 });
+
+                $('body').on('click', '.bp-group-clone', function(e) {
+                    e.preventDefault();
+                    console.log('Clone button clicked');
+                    var groupId = $(this).data('group-id');
+                    var groupName = $(this).closest('tr').find('.column-title strong').text();
+                    console.log('Group ID:', groupId);
+                    console.log('Group Name:', groupName);
+                    
+                    var cloneDialog = $('<div title="' + <?php echo wp_json_encode(__('Clone Group', 'buddypress-group-clone')); ?> + '">' +
+                        '<p>' + <?php echo wp_json_encode(__('Enter a name for the cloned group:', 'buddypress-group-clone')); ?> + '</p>' +
+                        '<input type="text" id="new-group-name" value="' + groupName + '">' +
+                        '<p>' + <?php echo wp_json_encode(__('Select components to clone:', 'buddypress-group-clone')); ?> + '</p>' +
+                        '<label><input type="checkbox" name="clone_components[]" value="members"> ' + <?php echo wp_json_encode(__('Members', 'buddypress-group-clone')); ?> + '</label><br>' +
+                        '<label><input type="checkbox" name="clone_components[]" value="forums"> ' + <?php echo wp_json_encode(__('Forums', 'buddypress-group-clone')); ?> + '</label><br>' +
+                        '<label><input type="checkbox" name="clone_components[]" value="activity"> ' + <?php echo wp_json_encode(__('Activity', 'buddypress-group-clone')); ?> + '</label><br>' +
+                        '<label><input type="checkbox" name="clone_components[]" value="media"> ' + <?php echo wp_json_encode(__('Media', 'buddypress-group-clone')); ?> + '</label><br>' +
+                        '</div>');
+
+                    cloneDialog.dialog({
+                        modal: true,
+                        buttons: {
+                            <?php echo wp_json_encode(__('Clone', 'buddypress-group-clone')); ?>: function() {
+                                var newGroupName = $('#new-group-name').val();
+                                var selectedComponents = [];
+                                $('input[name="clone_components[]"]:checked').each(function() {
+                                    selectedComponents.push($(this).val());
+                                });
+
+                                if (newGroupName && selectedComponents.length > 0) {
+                                    $.ajax({
+                                        url: ajaxurl,
+                                        type: 'POST',
+                                        data: {
+                                            action: 'bp_group_clone',
+                                            group_id: groupId,
+                                            new_group_name: newGroupName,
+                                            clone_components: selectedComponents,
+                                            _wpnonce: bpGroupCloneNonce
+                                        },
+                                        success: function(response) {
+                                            if (response.success) {
+                                                alert('Group cloned successfully!');
+                                                location.reload();
+                                            } else {
+                                                alert('Error: ' + response.data);
+                                            }
+                                        },
+                                        error: function() {
+                                            alert('An error occurred while cloning the group.');
+                                        }
+                                    });
+                                    $(this).dialog("close");
+                                } else {
+                                    alert('Please enter a group name and select at least one component to clone.');
+                                }
+                            },
+                            "Cancel": function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                });
             });
+            /* ]]> */
+            </script>
+            <?php
         });
-        </script>
-        <?php
-        });
+    }
+
+    public function process_clone() {
+        check_ajax_referer('bp_group_clone', '_wpnonce');
+
+        $group_id = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
+        $new_group_name = isset($_POST['new_group_name']) ? sanitize_text_field($_POST['new_group_name']) : '';
+        $clone_components = isset($_POST['clone_components']) ? array_map('sanitize_text_field', $_POST['clone_components']) : array();
+
+        if (empty($new_group_name)) {
+            wp_send_json_error('New group name cannot be empty.');
+        }
+
+        if (empty($clone_components)) {
+            wp_send_json_error('Please select at least one component to clone.');
+        }
+
+        $original_group = groups_get_group($group_id);
+
+        // Create new group
+        $new_group_id = groups_create_group(array(
+            'creator_id' => get_current_user_id(),
+            'name' => $new_group_name,
+            'description' => sprintf(__('This is a clone of the group "%s"', 'buddypress-group-clone'), $original_group->name),
+            'slug' => groups_check_slug(sanitize_title($new_group_name)),
+            'status' => $original_group->status,
+            'enable_forum' => $original_group->enable_forum,
+            'date_created' => bp_core_current_time()
+        ));
+
+        if ($new_group_id) {
+            // Clone selected components
+            if (in_array('members', $clone_components)) {
+                $this->clone_members($group_id, $new_group_id);
+            }
+            if (in_array('forums', $clone_components)) {
+                $this->clone_forums($group_id, $new_group_id);
+            }
+            if (in_array('activity', $clone_components)) {
+                $this->clone_activity($group_id, $new_group_id);
+            }
+            if (in_array('media', $clone_components)) {
+                $this->clone_media($group_id, $new_group_id);
+            }
+
+            // Clone group meta
+            $group_meta = groups_get_groupmeta($group_id);
+            foreach ($group_meta as $meta_key => $meta_value) {
+                groups_update_groupmeta($new_group_id, $meta_key, $meta_value);
+            }
+
+            wp_send_json_success('Group cloned successfully.');
+        } else {
+            wp_send_json_error('Failed to clone group');
+        }
     }
 }
 
