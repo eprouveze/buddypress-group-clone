@@ -2,22 +2,24 @@
 
 class BP_Group_Clone {
 
+    private $group_clone_functions;
+
     public function __construct() {
         $this->load_dependencies();
-        $this->define_admin_hooks();
-        $this->define_public_hooks();
+        $this->initialize_functions();
+        $this->define_hooks();
     }
 
     private function load_dependencies() {
         require_once BP_GROUP_CLONE_PLUGIN_DIR . 'includes/bp-group-clone-functions.php';
     }
 
-    private function define_admin_hooks() {
-        // These hooks are now handled by BP_Group_Clone_Functions
+    private function initialize_functions() {
+        $this->group_clone_functions = new BP_Group_Clone_Functions();
     }
 
-    private function define_public_hooks() {
-        // These hooks are now handled by BP_Group_Clone_Functions
+    private function define_hooks() {
+        add_action('bp_include', array($this->group_clone_functions, 'setup_actions'));
     }
 
     public function run() {
