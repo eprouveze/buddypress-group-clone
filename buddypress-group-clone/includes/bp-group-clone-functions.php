@@ -70,7 +70,7 @@ class BP_Group_Clone_Functions {
             $new_group_id = groups_create_group(array(
                 'creator_id' => get_current_user_id(),
                 'name' => $new_group_name,
-                'description' => $original_group->description,
+                'description' => sprintf(__('This is a clone of the group "%s"', 'buddypress-group-clone'), $original_group->name),
                 'slug' => groups_check_slug(sanitize_title($new_group_name)),
                 'status' => $original_group->status,
                 'enable_forum' => $original_group->enable_forum,
@@ -112,7 +112,9 @@ class BP_Group_Clone_Functions {
                 console.log('Processing row:', $(this).closest('tr').attr('id'));
                 var $this = $(this);
                 var groupId = $this.closest('tr').attr('id').replace('group-', '');
-                $this.find('.delete').before('<span class="clone"> | <a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a></span>');
+                if ($this.find('.bp-group-clone').length === 0) {
+                    $this.find('.delete').before('<span class="clone"> | <a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_html__('Clone', 'buddypress-group-clone'); ?></a></span>');
+                }
             });
 
             $(document).on('click', '.bp-group-clone', function(e) {
