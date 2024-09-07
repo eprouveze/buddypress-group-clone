@@ -95,11 +95,6 @@ class BP_Group_Clone_Functions {
                 return;
             }
 
-            if (empty($clone_components)) {
-                bp_core_add_message(__('Please select at least one component to clone.', 'buddypress-group-clone'), 'error');
-                return;
-            }
-
             // Create new group
             $new_group_id = groups_create_group(array(
                 'creator_id' => get_current_user_id(),
