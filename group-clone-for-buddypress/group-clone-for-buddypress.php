@@ -13,7 +13,7 @@ Domain Path: /languages
 */
 
 // Exit if accessed directly
-if (!defined('ABSPATH')) exit;
+defined('ABSPATH') || exit;
 
 // Define plugin constants
 define('GROUP_CLONE_FOR_BP_VERSION', '1.1.0');
@@ -25,7 +25,7 @@ require_once GROUP_CLONE_FOR_BP_PLUGIN_DIR . 'includes/class-group-clone-for-bp.
 
 // Check if BuddyPress is active
 function group_clone_for_bp_check_buddypress() {
-    if (!class_exists('BuddyPress')) {
+    if (!function_exists('buddypress')) {
         add_action('admin_notices', 'group_clone_for_bp_buddypress_notice');
         return false;
     }
