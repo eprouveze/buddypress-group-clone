@@ -254,7 +254,7 @@ class BP_Group_Clone_Functions {
             ?>
             <script type="text/javascript">
             /* <![CDATA[ */
-            var bpGroupCloneNonce = '<?php echo $nonce; ?>';
+            var bpGroupCloneNonce = '<?php echo wp_create_nonce('bp_group_clone'); ?>';
             jQuery(document).ready(function($) {
                 console.log('BP Group Clone: jQuery ready function executed');
                 console.log('Adding clone buttons to group rows');
@@ -335,55 +335,6 @@ class BP_Group_Clone_Functions {
         });
     }
 
-    public function process_clone() {
-        check_ajax_referer('bp_group_clone', '_wpnonce');
-
-        $group_id = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
-        $new_group_name = isset($_POST['new_group_name']) ? sanitize_text_field($_POST['new_group_name']) : '';
-        $clone_components = isset($_POST['clone_components']) ? array_map('sanitize_text_field', $_POST['clone_components']) : array();
-
-        if (empty($new_group_name)) {
-            wp_send_json_error('New group name cannot be empty.');
-        }
-
-        $original_group = groups_get_group($group_id);
-
-        // Create new group
-        $new_group_id = groups_create_group(array(
-            'creator_id' => get_current_user_id(),
-            'name' => $new_group_name,
-            'description' => sprintf(__('This is a clone of the group "%s"', 'buddypress-group-clone'), $original_group->name),
-            'slug' => groups_check_slug(sanitize_title($new_group_name)),
-            'status' => $original_group->status,
-            'enable_forum' => $original_group->enable_forum,
-            'date_created' => bp_core_current_time()
-        ));
-
-        if ($new_group_id) {
-            // Clone selected components
-            if (in_array('members', $clone_components)) {
-                $this->clone_members($group_id, $new_group_id);
-            }
-            if (in_array('forums', $clone_components)) {
-                $this->clone_forums($group_id, $new_group_id);
-            }
-            if (in_array('activity', $clone_components)) {
-                $this->clone_activity($group_id, $new_group_id);
-            }
-            if (in_array('media', $clone_components)) {
-                $this->clone_media($group_id, $new_group_id);
-            }
-
-            // Clone group meta
-            $group_meta = groups_get_groupmeta($group_id);
-            foreach ($group_meta as $meta_key => $meta_value) {
-                groups_update_groupmeta($new_group_id, $meta_key, $meta_value);
-            }
-
-            wp_send_json_success('Group cloned successfully.');
-        } else {
-            wp_send_json_error('Failed to clone group');
-        }
     }
 }
 
