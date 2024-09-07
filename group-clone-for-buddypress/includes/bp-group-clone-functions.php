@@ -304,11 +304,6 @@ class BP_Group_Clone_Functions {
                                 }
                                 console.log('Selected Components:', selectedComponents); // Debugging line
 
-                                if (selectedComponents.length === 0) {
-                                    alert('Please select at least one component to clone.');
-                                    return;
-                                }
-
                                 $.ajax({
                                     url: ajaxurl,
                                     type: 'POST',
