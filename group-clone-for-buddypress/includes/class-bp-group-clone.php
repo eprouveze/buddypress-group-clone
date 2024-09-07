@@ -20,16 +20,22 @@ class BP_Group_Clone {
 
     private function define_hooks() {
         add_action('bp_include', array($this, 'setup_group_clone_functions'));
+        add_action('bp_init', array($this, 'init_group_clone_functions'));
     }
 
     public function run() {
         $this->load_plugin_textdomain();
-        $this->setup_group_clone_functions();
     }
 
     public function setup_group_clone_functions() {
         if (method_exists($this->group_clone_functions, 'setup_actions')) {
             $this->group_clone_functions->setup_actions();
+        }
+    }
+
+    public function init_group_clone_functions() {
+        if (method_exists($this->group_clone_functions, 'init')) {
+            $this->group_clone_functions->init();
         }
     }
 
