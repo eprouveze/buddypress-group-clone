@@ -22,7 +22,7 @@ class BP_Group_Clone {
         add_action('bp_include', array($this, 'setup_group_clone_functions'));
         add_action('bp_init', array($this, 'init_group_clone_functions'));
         add_action('admin_enqueue_scripts', array($this->group_clone_functions, 'enqueue_admin_scripts'));
-        add_action('admin_footer', array($this->group_clone_functions, 'add_admin_button'));
+        add_action('admin_footer', array($this->group_clone_functions, 'add_clone_button_to_admin'));
     }
 
     public function run() {
