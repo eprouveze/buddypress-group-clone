@@ -1,6 +1,6 @@
-# BuddyPress Group Clone
+# Group Clone for BuddyPress
 
-BuddyPress Group Clone is a WordPress plugin that extends BuddyPress functionality by adding the ability to clone groups. This plugin adds a clone button in both the WordPress admin interface and the BuddyPress group management area.
+Group Clone for BuddyPress is a WordPress plugin that extends BuddyPress functionality by adding the ability to clone groups. This plugin adds a clone button in both the WordPress admin interface and the BuddyPress group management area.
 
 ## Features
 
