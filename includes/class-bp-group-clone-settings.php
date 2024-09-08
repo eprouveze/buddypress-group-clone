@@ -75,8 +75,7 @@ class BP_Group_Clone_Settings {
         // Check if the form is submitted.
         if ( isset( $_POST['submit'] ) ) {
             // Verify nonce.
-            $nonce = isset( $_POST['bp_group_clone_settings_nonce'] ) ? wp_unslash( $_POST['bp_group_clone_settings_nonce'] ) : '';
-            if ( ! wp_verify_nonce( sanitize_text_field( $nonce ), 'bp_group_clone_settings_action' ) ) {
+            if ( ! isset( $_POST['bp_group_clone_settings_nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['bp_group_clone_settings_nonce'] ), 'bp_group_clone_settings_action' ) ) {
                 wp_die( esc_html__( 'Security check failed. Please try again.', 'buddypress-group-clone' ) );
             }
         }
@@ -123,7 +122,7 @@ class BP_Group_Clone_Settings {
      */
     public function sanitize_fields_to_clone( $input ) {
         $valid_fields = array( 'name', 'type', 'status', 'members', 'forums', 'activity', 'media' );
-        return array_intersect( $input, $valid_fields );
+        return array_intersect( (array) $input, $valid_fields );
     }
 }
 

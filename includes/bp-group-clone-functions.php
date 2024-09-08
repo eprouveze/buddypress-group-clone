@@ -101,111 +101,100 @@ class BP_Group_Clone_Functions {
     }
 
     public function process_clone() {
-    // Verify nonce
-    $nonce = isset($_POST['_wpnonce']) ? sanitize_text_field(wp_unslash($_POST['_wpnonce'])) : '';
-    if (!wp_verify_nonce($nonce, 'bp_group_clone')) {
-        wp_send_json_error(['message' => __('Security check failed.', 'buddypress-group-clone')]);
-        return;
-    }
-
-    // Sanitize and validate input
-    $original_group_id = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
-    $new_group_name = isset($_POST['new_group_name']) ? sanitize_text_field(wp_unslash($_POST['new_group_name'])) : '';
-    $clone_components = isset($_POST['clone_components']) ? array_map('sanitize_text_field', wp_unslash($_POST['clone_components'])) : array();
-
-    // Validate group ID
-    $original_group = groups_get_group($original_group_id);
-    if (!$original_group) {
-        wp_send_json_error(['message' => __('Invalid original group ID.', 'buddypress-group-clone')]);
-        return;
-    }
-
-    // Validate new group name
-    if (empty($new_group_name)) {
-        wp_send_json_error(['message' => __('New group name cannot be empty.', 'buddypress-group-clone')]);
-        return;
-    }
-
-    // Validate clone components
-    $valid_components = ['members', 'forums', 'activity', 'media'];
-    $clone_components = array_intersect($clone_components, $valid_components);
-
-    // Get group types of the original group
-    $group_types = bp_groups_get_group_type($original_group_id, false);
-
-    // Create new group
-    $new_group_args = array(
-        'creator_id' => get_current_user_id(),
-        'name' => $new_group_name,
-        /* translators: %s: Original group name */
-        'description' => sprintf(__('This is a clone of the group "%s"', 'buddypress-group-clone'), esc_html($original_group->name)),
-        'slug' => groups_check_slug(sanitize_title($new_group_name)),
-        'status' => $original_group->status,
-        'enable_forum' => $original_group->enable_forum,
-        'date_created' => bp_core_current_time()
-    );
-
-    $new_group_id = groups_create_group($new_group_args);
-
-    if (!$new_group_id) {
-        error_log('BP Group Clone: Failed to create new group. Args: ' . print_r($new_group_args, true));
-        wp_send_json_error(['message' => __('Failed to create new group.', 'buddypress-group-clone')]);
-        return;
-    }
-
-    // Set group types for the new group
-    if (!empty($group_types)) {
-        foreach ($group_types as $group_type) {
-            bp_groups_set_group_type($new_group_id, $group_type);
+        // Verify nonce
+        $nonce = isset($_POST['_wpnonce']) ? sanitize_text_field(wp_unslash($_POST['_wpnonce'])) : '';
+        if (!wp_verify_nonce($nonce, 'bp_group_clone')) {
+            wp_send_json_error(['message' => __('Security check failed.', 'buddypress-group-clone')]);
+            return;
         }
-    }
 
-    // Clone selected components
-    foreach ($clone_components as $component) {
-        switch ($component) {
-            case 'members':
-                $this->clone_members($original_group_id, $new_group_id);
-                break;
-            case 'forums':
-                $this->clone_forums($original_group_id, $new_group_id);
-                break;
-            case 'activity':
-                $this->clone_activity($original_group_id, $new_group_id);
-                break;
-            case 'media':
-                $this->clone_media($original_group_id, $new_group_id);
-                break;
+        // Sanitize and validate input
+        $original_group_id = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
+        $new_group_name = isset($_POST['new_group_name']) ? sanitize_text_field(wp_unslash($_POST['new_group_name'])) : '';
+        $clone_components = isset($_POST['clone_components']) ? array_map('sanitize_text_field', wp_unslash($_POST['clone_components'])) : array();
+
+        // Validate group ID
+        $original_group = groups_get_group($original_group_id);
+        if (!$original_group) {
+            wp_send_json_error(['message' => __('Invalid original group ID.', 'buddypress-group-clone')]);
+            return;
         }
+
+        // Validate new group name
+        if (empty($new_group_name)) {
+            wp_send_json_error(['message' => __('New group name cannot be empty.', 'buddypress-group-clone')]);
+            return;
+        }
+
+        // Validate clone components
+        $valid_components = ['members', 'forums', 'activity', 'media'];
+        $clone_components = array_intersect($clone_components, $valid_components);
+
+        // Get group types of the original group
+        $group_types = bp_groups_get_group_type($original_group_id, false);
+
+        // Create new group
+        $new_group_args = array(
+            'creator_id' => get_current_user_id(),
+            'name' => $new_group_name,
+            /* translators: %s: Original group name */
+            'description' => sprintf(__('This is a clone of the group "%s"', 'buddypress-group-clone'), esc_html($original_group->name)),
+            'slug' => groups_check_slug(sanitize_title($new_group_name)),
+            'status' => $original_group->status,
+            'enable_forum' => $original_group->enable_forum,
+            'date_created' => bp_core_current_time()
+        );
+
+        $new_group_id = groups_create_group($new_group_args);
+
+        if (!$new_group_id) {
+            error_log('BP Group Clone: Failed to create new group. Args: ' . print_r($new_group_args, true));
+            wp_send_json_error(['message' => __('Failed to create new group.', 'buddypress-group-clone')]);
+            return;
+        }
+
+        // Set group types for the new group
+        if (!empty($group_types)) {
+            foreach ($group_types as $group_type) {
+                bp_groups_set_group_type($new_group_id, $group_type);
+            }
+        }
+
+        // Clone selected components
+        foreach ($clone_components as $component) {
+            switch ($component) {
+                case 'members':
+                    $this->clone_members($original_group_id, $new_group_id);
+                    break;
+                case 'forums':
+                    $this->clone_forums($original_group_id, $new_group_id);
+                    break;
+                case 'activity':
+                    $this->clone_activity($original_group_id, $new_group_id);
+                    break;
+                case 'media':
+                    $this->clone_media($original_group_id, $new_group_id);
+                    break;
+            }
+        }
+
+        // Clone group meta
+        $group_meta = groups_get_groupmeta($original_group_id);
+        foreach ($group_meta as $meta_key => $meta_value) {
+            groups_update_groupmeta($new_group_id, $meta_key, $meta_value);
+        }
+
+        // Update the last activity time for the new group
+        $current_time = bp_core_current_time();
+        groups_update_last_activity($new_group_id, $current_time);
+
+        error_log('BP Group Clone: New group created. ID: ' . $new_group_id . ', Name: ' . $new_group_name . ', Types: ' . print_r($group_types, true));
+
+        wp_send_json_success([
+            'message' => __('Group cloned successfully.', 'buddypress-group-clone'),
+            'redirect_url' => admin_url('admin.php?page=bp-groups')
+        ]);
     }
-
-    // Clone group meta
-    $group_meta = groups_get_groupmeta($original_group_id);
-    foreach ($group_meta as $meta_key => $meta_value) {
-        groups_update_groupmeta($new_group_id, $meta_key, $meta_value);
-    }
-
-    // Update the last activity time for the new group
-    $current_time = bp_core_current_time();
-    groups_update_groupmeta($new_group_id, 'last_activity', $current_time);
-    
-    // Update the group's last activity in the database
-    global $wpdb;
-    $bp = buddypress();
-    $wpdb->update(
-        $bp->groups->table_name,
-        array('last_activity' => $current_time),
-        array('id' => $new_group_id),
-        array('%s'),
-        array('%d')
-    );
-
-    error_log('BP Group Clone: New group created. ID: ' . $new_group_id . ', Name: ' . $new_group_name . ', Types: ' . print_r($group_types, true));
-
-    wp_send_json_success([
-        'message' => __('Group cloned successfully.', 'buddypress-group-clone'),
-        'redirect_url' => admin_url('admin.php?page=bp-groups')
-    ]);
-}
 
     private function clone_members($original_group_id, $new_group_id) {
         $members = groups_get_group_members([
@@ -334,12 +323,12 @@ class BP_Group_Clone_Functions {
             return;
         }
 
-        $error_details = array_map('sanitize_text_field', wp_unslash($_POST['error_details']));
+        $error_details = wp_unslash($_POST['error_details']);
         $error_message = sprintf(
             "AJAX Error in BP Group Clone:\nStatus: %s\nError: %s\nResponse: %s",
-            $error_details['textStatus'],
-            $error_details['errorThrown'],
-            sanitize_textarea_field($error_details['responseText'])
+            isset($error_details['textStatus']) ? sanitize_text_field($error_details['textStatus']) : '',
+            isset($error_details['errorThrown']) ? sanitize_text_field($error_details['errorThrown']) : '',
+            isset($error_details['responseText']) ? sanitize_textarea_field($error_details['responseText']) : ''
         );
 
         error_log($error_message);
