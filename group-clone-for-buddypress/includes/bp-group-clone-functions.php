@@ -325,11 +325,12 @@ class BP_Group_Clone_Functions {
     }
 
     public function log_ajax_error() {
-        if (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'bp_group_clone_log_error')) {
+        $nonce = isset($_POST['_wpnonce']) ? sanitize_text_field(wp_unslash($_POST['_wpnonce'])) : '';
+        if (!wp_verify_nonce($nonce, 'bp_group_clone_log_error')) {
             return;
         }
 
-        if (!isset($_POST['error_details']) || !is_array(wp_unslash($_POST['error_details']))) {
+        if (!isset($_POST['error_details']) || !is_array($_POST['error_details'])) {
             return;
         }
 
