@@ -25,14 +25,17 @@ class BP_Group_Clone_Functions {
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-dialog');
         wp_enqueue_style('wp-jquery-ui-dialog');
-        wp_enqueue_script('bp-group-clone-common', BP_GROUP_CLONE_PLUGIN_URL . 'assets/js/common.js', array('jquery', 'jquery-ui-dialog'), BP_GROUP_CLONE_VERSION, true);
+        wp_enqueue_script('bp-group-clone-common', BP_GROUP_CLONE_PLUGIN_URL . 'assets/js/commons.js', array('jquery', 'jquery-ui-dialog'), BP_GROUP_CLONE_VERSION, true);
         
-        wp_localize_script('bp-group-clone-common', 'bpGroupCloneL10n', array(
+        $selected_fields = get_option('bp_group_clone_fields_to_clone', array());
+
+        $l10n = array(
             'cloneText' => __('Clone', 'buddypress-group-clone'),
             'cloneGroupTitle' => __('Clone Group', 'buddypress-group-clone'),
             'groupStatusText' => __('Group Status: ', 'buddypress-group-clone'),
             'groupTypeText' => __('Group Type: ', 'buddypress-group-clone'),
             'enterNameText' => __('Enter a name for the cloned group:', 'buddypress-group-clone'),
+            'enterDescriptionText' => __('Enter a description for the cloned group:', 'buddypress-group-clone'),
             'optionalComponentsText' => __('Optional: Select additional components to clone:', 'buddypress-group-clone'),
             'membersText' => __('Members', 'buddypress-group-clone'),
             'forumsText' => __('Forums', 'buddypress-group-clone'),
@@ -43,10 +46,25 @@ class BP_Group_Clone_Functions {
             'emptyGroupNameError' => __('Group name cannot be empty.', 'buddypress-group-clone'),
             'cloneSuccessMessage' => __('Group cloned successfully!', 'buddypress-group-clone'),
             'genericErrorMessage' => __('An error occurred while cloning the group.', 'buddypress-group-clone'),
-            'ajaxErrorMessage' => __('A network error occurred. Please try again.', 'buddypress-group-clone')
-        ));
+            'ajaxErrorMessage' => __('A network error occurred. Please try again.', 'buddypress-group-clone'),
+            'noGroupTypeText' => __('No Group Type', 'buddypress-group-clone'),
+            'casualGreetingText' => __('Hey there! Ready to clone a group?', 'buddypress-group-clone'),
+            'selectedFields' => $selected_fields
+        );
 
-        wp_localize_script('bp-group-clone-common', 'bpGroupCloneNonce', wp_create_nonce('bp_group_clone'));
+        if (!is_array($l10n)) {
+            $l10n = array(); // Ensure $l10n is an array
+        }
+
+        wp_add_inline_script(
+            'bp-group-clone-common',
+            'const bpGroupCloneL10n = ' . wp_json_encode($l10n) . ';'
+        );
+
+        wp_add_inline_script(
+            'bp-group-clone-common',
+            'const bpGroupCloneNonce = ' . wp_json_encode(wp_create_nonce('bp_group_clone')) . ';'
+        );
     }
 
     public function add_admin_nav_item() {
@@ -86,9 +104,9 @@ class BP_Group_Clone_Functions {
                 $('.row-actions').each(function() {
                     var $this = $(this);
                     var groupId = $this.closest('tr').attr('id').replace('group-', '');
-                    console.log('BP Group Clone: Processing group with ID: ' + groupId);
+                    //console.log('BP Group Clone: Processing group with ID: ' + groupId);
                     if ($this.find('.bp-group-clone').length === 0) {
-                        console.log('BP Group Clone: Adding clone button to group ' + groupId);
+                        //console.log('BP Group Clone: Adding clone button to group ' + groupId);
                         $this.prepend('<span class="clone"><a href="#" class="bp-group-clone" data-group-id="' + groupId + '"><?php echo esc_js(__('Clone', 'buddypress-group-clone')); ?></a> | </span>');
                     }
                 });
@@ -110,7 +128,12 @@ class BP_Group_Clone_Functions {
 
         // Sanitize and validate input
         $original_group_id = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
+        if (!$original_group_id) {
+            wp_send_json_error(['message' => __('Invalid original group ID.', 'buddypress-group-clone')]);
+            return;
+        }
         $new_group_name = isset($_POST['new_group_name']) ? sanitize_text_field(wp_unslash($_POST['new_group_name'])) : '';
+        $new_group_description = isset($_POST['new_group_description']) ? sanitize_textarea_field(wp_unslash($_POST['new_group_description'])) : '';
         $clone_components = isset($_POST['clone_components']) ? array_map('sanitize_text_field', wp_unslash($_POST['clone_components'])) : array();
 
         // Validate group ID
@@ -186,7 +209,18 @@ class BP_Group_Clone_Functions {
 
         // Update the last activity time for the new group
         $current_time = bp_core_current_time();
-        groups_update_last_activity($new_group_id, $current_time);
+        groups_update_groupmeta($new_group_id, 'last_activity', $current_time);
+        
+        // Update the group's last activity in the database
+        global $wpdb;
+        $bp = buddypress();
+        $wpdb->update(
+            $bp->groups->table_name,
+            array('last_activity' => $current_time),
+            array('id' => $new_group_id),
+            array('%s'),
+            array('%d')
+        );
 
         error_log('BP Group Clone: New group created. ID: ' . $new_group_id . ', Name: ' . $new_group_name . ', Types: ' . print_r($group_types, true));
 
@@ -323,12 +357,12 @@ class BP_Group_Clone_Functions {
             return;
         }
 
-        $error_details = wp_unslash($_POST['error_details']);
+        $error_details = array_map('sanitize_text_field', wp_unslash($_POST['error_details']));
         $error_message = sprintf(
             "AJAX Error in BP Group Clone:\nStatus: %s\nError: %s\nResponse: %s",
-            isset($error_details['textStatus']) ? sanitize_text_field($error_details['textStatus']) : '',
-            isset($error_details['errorThrown']) ? sanitize_text_field($error_details['errorThrown']) : '',
-            isset($error_details['responseText']) ? sanitize_textarea_field($error_details['responseText']) : ''
+            $error_details['textStatus'],
+            $error_details['errorThrown'],
+            sanitize_textarea_field($error_details['responseText'])
         );
 
         error_log($error_message);
